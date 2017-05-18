@@ -1,0 +1,21 @@
+{
+  "name": "@bouncingpixel/http-errors",
+  "version": "1.0.0",
+  "description": "Error objects for HTTP status codes that can be thrown with status set",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/http-errors"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "devDependencies": {
+    "typescript": "^2.2.1"
+  }
+}

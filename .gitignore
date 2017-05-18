@@ -1,0 +1,12 @@
+*.log
+.DS_Store*
+thumbs.db
+Thumbs.db
+Icon?
+node_modules
+.config
+.npm
+.node-gyp
+.cache
+.vscode/
+core.*

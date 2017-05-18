@@ -1,0 +1,40 @@
+{
+  "name": "@bouncingpixel/passport-auth",
+  "version": "0.2.0",
+  "description": "Express authentication handling with Passport",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/passport-auth"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": "6.x"
+  },
+  "dependencies": {
+    "@bouncingpixel/http-errors": "^1.0.0",
+    "bcrypt": "^1.0.2",
+    "bluebird": "^3.4.7",
+    "nconf": "^0.8.4",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0",
+    "winston": "^2.3.0"
+  },
+  "peerDependencies": {
+    "express": "^4.13.4"
+  },
+  "optionalDependencies": {
+    "passport-facebook": "^2.1.1",
+    "passport-google-oauth": "^1.0.0",
+    "passport-linkedin": "^1.0.0",
+    "passport-remember-me": "0.0.1",
+    "passport-twitter": "^1.0.4"
+  }
+}

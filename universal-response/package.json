@@ -1,0 +1,23 @@
+{
+  "name": "@bouncingpixel/universal-response",
+  "version": "0.2.0",
+  "description": "Extra Express responses for routes that are both rendered HTML and XHR",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/universal-response"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "express": "^4.13.4"
+  }
+}

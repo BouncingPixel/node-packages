@@ -1,0 +1,35 @@
+{
+  "name": "@bouncingpixel/rackspace-uploads",
+  "version": "0.5.0",
+  "description": "Express middleware to handle Rackspace uploads",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/rackspace-uploads"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": "6.x"
+  },
+  "dependencies": {
+    "async": "^2.1.4",
+    "bluebird": "^3.4.7",
+    "csurf": "^1.9.0",
+    "gm": "^1.23.0",
+    "mime": "^1.3.4",
+    "multer": "^1.2.1",
+    "nconf": "^0.8.4",
+    "pkgcloud": "^1.4.0",
+    "winston": "^2.3.0"
+  },
+  "peerDependencies": {
+    "express": "^4.13.4"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "name": "@bouncingpixel/auto-static-routes",
+  "version": "0.4.0",
+  "description": "Generates express routes automatically for static dust pages",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/auto-static-routes"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": "6.x"
+  },
+  "dependencies": {
+    "winston": "^2.3.0"
+  },
+  "peerDependencies": {
+    "express": "^4.13.4"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "@bouncingpixel/mongoose-db",
+  "version": "0.4.0",
+  "description": "Wrapper to set up mongoose and provides an impl for passport-auth",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/mongoose-db"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": "6.x"
+  },
+  "dependencies": {
+    "mongoose": "^4.7.6",
+    "nconf": "^0.8.4"
+  },
+  "peerDependencies": {
+    "express": "^4.13.4"
+  }
+}
