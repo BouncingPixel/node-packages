@@ -9,6 +9,8 @@ const fs = require('fs');
 const path = require('path');
 const fsunlink = bluebird.promisify(fs.unlink);
 
+const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
+
 const tmpPath = path.resolve(__dirname, '../../../tmp/');
 
 const uploadStorage = multer.diskStorage({
@@ -47,7 +49,7 @@ module.exports = function(fields) {
 
       if (!req.files[fieldName] || req.files[fieldName].length === 0 || req.files[fieldName][0].size <= 0) {
         if (fieldInfo.isRequired) {
-          return Promise.reject(ServerErrors.BadRequest(`The file for ${fieldName} is missing`));
+          return Promise.reject(new BadRequestError(`The file for ${fieldName} is missing`));
         }
       }
 
@@ -55,7 +57,7 @@ module.exports = function(fields) {
         const tooLarge = req.files[fieldName].filter(f => f.size > fieldInfo.maxSize);
         if (tooLarge.length) {
           const files = tooLarge.map(f => f.filename).join(', ');
-          return Promise.reject(ServerErrors.BadRequest(`The files ${files} are too large`));
+          return Promise.reject(new BadRequestError(`The files ${files} are too large`));
         }
       }
 

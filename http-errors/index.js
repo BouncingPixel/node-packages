@@ -1,11 +1,11 @@
 module.exports = {
-  HttpError: require('./dist/index'),
+  HttpError: require('./dist/index').HttpError,
 
-  AccountLockedError: require('./dist/accountlocked'),
-  BadRequestError: require('./dist/badrequest'),
-  BannedError: require('./dist/banned'),
-  ForbiddenError: require('./dist/forbidden'),
-  InternalServerError: require('./dist/internalserver'),
-  NotAuthorizedError: require('./dist/notauthorized'),
-  NotFoundError: require('./dist/notfound')
+  AccountLockedError: require('./dist/accountlocked').AccountLockedError,
+  BadRequestError: require('./dist/badrequest').BadRequestError,
+  BannedError: require('./dist/banned').BannedError,
+  ForbiddenError: require('./dist/forbidden').ForbiddenError,
+  InternalServerError: require('./dist/internalserver').InternalServerError,
+  NotAuthorizedError: require('./dist/notauthorized').NotAuthorizedError,
+  NotFoundError: require('./dist/notfound').NotFoundError
 };

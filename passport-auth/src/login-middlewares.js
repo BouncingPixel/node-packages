@@ -75,6 +75,22 @@ module.exports = function(impl) {
       })(req, res, next);
     },
 
+    oathLoginStartFactory: function(provider, scope) {
+      return passport.authenticate(provider, scope);
+    },
+
+    oathLoginCallbackFactory: function(provider) {
+      return function(req, res, next) {
+        passport.authenticate(provider, function(err, user) {
+          if (err) {
+            return next(err);
+          }
+
+          generalLogin(req, user, next);
+        })(req, res, next);
+      };
+    },
+
     logout: function(req, res, next) {
       res.clearCookie('remember_me');
       req.logout();

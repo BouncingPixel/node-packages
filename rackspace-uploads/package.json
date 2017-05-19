@@ -19,6 +19,7 @@
     "node": "6.x"
   },
   "dependencies": {
+    "@bouncingpixel/http-errors": "file:../http-errors/",
     "async": "^2.1.4",
     "bluebird": "^3.4.7",
     "csurf": "^1.9.0",

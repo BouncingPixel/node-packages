@@ -172,7 +172,7 @@ module.exports = function serviceFactory(impl) {
     });
   }
 
-  const baseUrl = (nconf.get('requireHTTPS') ? 'https://' : 'http://') + nconf.get('domain');
+  const baseUrl = (nconf.get('requireHTTPS') ? 'https://' : 'http://') + nconf.get('siterootHost');
 
   // be user to uncomment the necessary areas in User model before enabling
   if (nconf.get('sso:facebook:appid') && nconf.get('sso:facebook:secret')) {

@@ -89,7 +89,7 @@ function attemptRender(baseViewsDir, urlpath, fallback, done) {
     // if not, then next();
     if (err) {
       if (fallback) {
-        attemptRender(fallback, null, done);
+        attemptRender(baseViewsDir, fallback, null, done);
         return;
       }
 

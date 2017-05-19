@@ -19,7 +19,7 @@
     "node": "6.x"
   },
   "dependencies": {
-    "@bouncingpixel/http-errors": "^1.0.0",
+    "@bouncingpixel/http-errors": "file:../http-errors/",
     "bcrypt": "^1.0.2",
     "bluebird": "^3.4.7",
     "nconf": "^0.8.4",

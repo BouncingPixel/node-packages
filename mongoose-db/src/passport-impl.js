@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const LoginLocker = require('../models/login-locker');
-const RememberToken = require('../models/remember-me');
+const RememberToken = require('../models/remember-token');
 
 module.exports = function(User, ssoExtendProfileFn) {
   return {
@@ -52,7 +52,7 @@ module.exports = function(User, ssoExtendProfileFn) {
 
     successLogin: function(user, lockout) {
       lockout.failedCount = 0;
-      yield lockout.save();
+      return lockout.save();
     },
 
     failedLogin: function(user, lockout, lockedUntilTime) {

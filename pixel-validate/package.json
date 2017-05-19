@@ -1,0 +1,25 @@
+{
+  "name": "@bouncingpixel/pixel-validate",
+  "version": "0.2.0",
+  "description": "Server and browser side validation when working with Mongoose models.",
+  "main": "src/server.js",
+  "browser": "src/browser.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/pixel-validate"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": "6.x"
+  },
+  "peerDependencies": {
+    "mongoose": "^4.7.6"
+  }
+}

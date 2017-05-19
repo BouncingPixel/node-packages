@@ -1,13 +1,13 @@
 {
-  "name": "@bouncingpixel/mongoose-db",
+  "name": "@bouncingpixel/algolia",
   "version": "0.4.0",
-  "description": "Wrapper to set up mongoose and provides an impl for passport-auth",
+  "description": "Helpers for algolia, namely a Mongoose model plugin",
   "main": "index.js",
   "scripts": {
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BouncingPixel/node-packages/tree/master/mongoose-db"
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/algolia"
   },
   "author": "Matt Hall <mhall@bouncingpixel.com>",
   "license": "MIT",
@@ -19,12 +19,11 @@
     "node": "6.x"
   },
   "dependencies": {
-    "bluebird": "^3.4.7",
-    "connect-mongo": "^1.3.2",
-    "nconf": "^0.8.4"
+    "algoliasearch": "^3.22.2",
+    "nconf": "^0.8.4",
+    "winston": "^2.3.0"
   },
   "peerDependencies": {
-    "express": "^4.13.4",
     "mongoose": "^4.7.6"
   }
 }

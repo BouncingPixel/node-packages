@@ -7,7 +7,12 @@ const logger = require('winston');
 
 const emailTemplatesPath = path.resolve(nconf('mailgunTemplatePath'));
 const defaultFrom = nconf.get('mailgunDefaultFrom');
-const siterootUrl = nconf.get('siterootUrl');
+const siterootHost = nconf.get('siterootHost');
+const requireHTTPS = nconf.get('requireHTTPS');
+
+const siterootUrl =
+  (requireHTTPS && requireHTTPS.toString().toLowerCase() === 'true' ? 'https' : 'http') +
+  '://' + siterootHost;
 
 const mailgunDomain = nconf.get('mailgunDomain');
 const mailgun = (mailgunDomain && nconf.get('mailgunApiKey')) ?
@@ -86,13 +91,16 @@ module.exports = {
       return Promise.reject('No from email');
     }
 
-    const individualVars = recipients.reduce(function(obj, recipient) {
-      const mergeVars = template.individualVars(recipient, opts);
-      if (mergeVars) {
-        obj[recipient.email] = mergeVars;
+    const individualVars = template.individualVars ? recipients.reduce(function(obj, recipient) {
+      const mailgunVars = template.individualVars(recipient, opts);
+      if (mailgunVars) {
+        if (!obj) {
+          obj = {};
+        }
+        obj[recipient.email] = mailgunVars;
       }
       return obj;
-    }, {});
+    }, null) : null;
 
     const subject = getValue(template.subject, opts);
 
@@ -101,7 +109,7 @@ module.exports = {
     }
 
     return new Promise(function(resolve, reject) {
-      let locals = template.mergeVars(opts);
+      let locals = template.dustVars ? template.dustVars(opts) : opts;
       locals.siterootUrl = siterootUrl;
 
       const renderOptions = {
@@ -129,9 +137,12 @@ module.exports = {
         from: fromEmail,
         to: toEmails,
         subject: subject,
-        'recipient-variables': individualVars,
         html: htmlContent
       };
+
+      if (individualVars) {
+        dataToSend['recipient-variables'] = individualVars;
+      }
 
       return mailgun.messages().send(dataToSend);
     });

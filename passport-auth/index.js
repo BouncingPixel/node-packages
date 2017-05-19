@@ -1,10 +1,16 @@
 const passport = require('passport');
 
+let cachedModule = null;
+
 module.exports = function(impl) {
+  if (cachedModule || !impl) {
+    return cachedModule;
+  }
+
   const PassportService = require('./src/passport-service')(impl);
   const loginMiddlewares = require('./src/login-middlewares')(impl);
 
-  return {
+  cachedModule = {
     init: function(app) {
       app.use(passport.initialize());
       app.use(passport.session());
@@ -49,4 +55,31 @@ module.exports = function(impl) {
       requireUserRole: require('./src/require-user-role')(impl)
     }
   };
+
+  if (PassportService.facebookStrategy) {
+    cachedModule.middlewares.facebookStart = loginMiddlewares.oathLoginStartFactory(
+      'facebook', {scope: ['email', 'public_profile']}
+    );
+    cachedModule.middlewares.facebookCallback = loginMiddlewares.oathLoginCallbackFactory('facebook');
+  }
+  if (PassportService.googleStrategy) {
+    cachedModule.middlewares.googleStart = loginMiddlewares.oathLoginStartFactory(
+      'google', {scope: ['email', 'profile']}
+    );
+    cachedModule.middlewares.googleCallback = loginMiddlewares.oathLoginCallbackFactory('google');
+  }
+  if (PassportService.twitterStrategy) {
+    cachedModule.middlewares.twitterStart = loginMiddlewares.oathLoginStartFactory(
+      'twitter', {scope: ['email']}
+    );
+    cachedModule.middlewares.twitterCallback = loginMiddlewares.oathLoginCallbackFactory('twitter');
+  }
+  if (PassportService.linkedinStrategy) {
+    cachedModule.middlewares.linkedinStart = loginMiddlewares.oathLoginStartFactory(
+      'linkedin', {scope: ['r_basicprofile', 'r_emailaddress']}
+    );
+    cachedModule.middlewares.linkedinCallback = loginMiddlewares.oathLoginCallbackFactory('linkedin');
+  }
+
+  return cachedModule;
 };

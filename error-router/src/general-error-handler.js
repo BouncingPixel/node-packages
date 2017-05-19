@@ -111,9 +111,9 @@ module.exports = function makeErrorHandler(inoptions) {
     possibleViews.push(codeGroupPage);
     possibleViews.push('errors/error');
 
-    const viewPath = path.resolve(req.app.get('views'));
+    const viewsDirPath = path.resolve(req.app.get('views'));
 
-    findExistingErrorPage(viewPath, possibleViews, function(_err, view) {
+    findExistingErrorPage(viewsDirPath, possibleViews, function(_err, view) {
       if (!view) {
         res.send(logMessage);
         return;
@@ -131,14 +131,15 @@ module.exports = function makeErrorHandler(inoptions) {
 
   // never returns errors, because we are trying to handle an error anyway
   // will default to returning no page (undefined) if all possibleViews encounter errors
-  function findExistingErrorPage(viewPath, possibleViews, done) {
+  function findExistingErrorPage(viewsDirPath, possibleViews, done) {
     if (possibleViews.length) {
       const view = possibleViews.shift();
+      const viewPath = path.resolve(viewsDirPath, view);
 
       fs.access(viewPath, fs.constants.R_OK, (err) => {
         if (err) {
           // if cannot access that one, then try the next one
-          findExistingErrorPage(viewPath, possibleViews, done);
+          findExistingErrorPage(viewsDirPath, possibleViews, done);
           return;
         }
 

@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "dustjs-linkedin": "2.7.5",
+    "mailgun-js": "^0.8.0",
     "nconf": "^0.8.4",
     "winston": "^2.3.0"
   }
