@@ -38,6 +38,8 @@ The system will convert uploaded images to the desired format before uploading.
 Configuring the uploader will allow imagemagick operations to occur on an image and store the resulting file.
 An uploaded file can have multiple derivative files with different operations, such as different resizings.
 
+**Note:** Multer is automatically injected into the route for you. There is no need to add multer.
+
 Use the middleware `uploadResizedImage` to add this functionality to a route.
 `uploadResizedImage` is a factory that generates a middleware using an options array. The options array
 specifies which images may be uploaded, how they may be manipulated, and the resulting filenames.
@@ -156,3 +158,16 @@ In the case where many users may be uploading images at any time, this may be th
      a hidden iframe to submit the form, use JS to listen to onLoad events in the iframe, and when the iframe
      navigates to the `returnTo` page, check for an error. If no error occurred, then the full filename is:
      the result of the `fileNameFactory(req)` + the filename in the file-input field (fetchable with JS).
+
+## Troubleshooting
+
+_req.body is empty/null/undefined_
+Be sure to set the `enctype` in the HTML form to `multipart/form-data`.
+
+_My CSRF check fails before the route handler_
+Since Multer is automatically added, the CSRF check cannot be done before Multer runs.
+Exclude your CSRF check from these routes and a CSRF check will be injected after Multer.
+
+_Getting a CSRF Token error on uploads_
+All uploader routes are currently adding CSRF handling. At this time, there is no way to stop the CSRF.
+Be sure to include a hidden field `_csrf` with the contents of `res.locals._csrf` or `{_csrf}` in Dust.

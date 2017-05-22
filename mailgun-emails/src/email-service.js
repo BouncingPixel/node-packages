@@ -4,8 +4,9 @@ const path = require('path');
 const nconf = require('nconf');
 const dust = require('dustjs-linkedin');
 const logger = require('winston');
+const fs = require('fs');
 
-const emailTemplatesPath = path.resolve(nconf('mailgunTemplatePath'));
+const emailTemplatesPath = path.resolve(nconf.get('mailgunTemplatePath'));
 const defaultFrom = nconf.get('mailgunDefaultFrom');
 const siterootHost = nconf.get('siterootHost');
 const requireHTTPS = nconf.get('requireHTTPS');
@@ -18,6 +19,46 @@ const mailgunDomain = nconf.get('mailgunDomain');
 const mailgun = (mailgunDomain && nconf.get('mailgunApiKey')) ?
     require('mailgun-js')({apiKey: nconf.get('mailgunApiKey'), domain: mailgunDomain}) :
     null;
+
+// using own cache and loader in case none was loaded. also, doesn't overwrite another loader
+const dustTemplateCache = {};
+
+function loadTemplate(templateName) {
+  if (dustTemplateCache[templateName]) {
+    return Promise.resolve(dustTemplateCache[templateName]);
+  }
+
+  const filepath = path.resolve(emailTemplatesPath, templateName + '.dust');
+
+  return new Promise((resolve, reject) => {
+    fs.readFile(filepath, { encoding: 'utf8' }, function(err, data) {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      const compiledTemplate = dust.compile(data);
+      const tmpl = dust.loadSource(compiledTemplate);
+
+      dustTemplateCache[templateName] = tmpl;
+
+      resolve(tmpl);
+    });
+  });
+}
+
+function dustRender(templatePath, context) {
+  return new Promise((resolve, reject) => {
+    dust.render(templatePath, context, function(err, content) {
+      if (err) {
+        reject(err);
+        return;
+      }
+
+      resolve(content);
+    });
+  });
+}
 
 function formatEmailAddress(person) {
   if (typeof person === 'string') {
@@ -54,7 +95,7 @@ module.exports = {
     }
 
     if (!mailgun) {
-      logger.info('No recipients to send to, ignoring email request');
+      logger.info('Mailgun is not configured, ignoring email request');
       return Promise.resolve();
     }
 
@@ -108,26 +149,20 @@ module.exports = {
       return Promise.reject('No subject or subject is empty for email');
     }
 
-    return new Promise(function(resolve, reject) {
-      let locals = template.dustVars ? template.dustVars(opts) : opts;
-      locals.siterootUrl = siterootUrl;
+    let locals = template.dustVars ? template.dustVars(opts) : opts;
+    locals.siterootUrl = siterootUrl;
 
-      const renderOptions = {
-        view: null,
-        views: emailTemplatesPath,
-        name: templateName,
-        ext: '.dust',
-        locals: locals
-      };
-      const context = dust.context({}, renderOptions).push(locals);
-      const templatePath = path.resolve(__dirname, '..', 'emails', templateName);
-      dust.render(templatePath, context, function(err, htmlContent) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(htmlContent);
-        }
-      });
+    const renderOptions = {
+      view: null,
+      views: emailTemplatesPath,
+      name: templateName,
+      ext: '.dust',
+      locals: locals
+    };
+    const context = dust.context({}, renderOptions).push(locals);
+
+    return loadTemplate(templateName).then(function(tmpl) {
+      return dustRender(tmpl, context);
     }).then(function(htmlContent) {
       if (!htmlContent || !htmlContent.length) {
         throw new Error('No content to send');

@@ -19,7 +19,7 @@
     "node": "6.x"
   },
   "dependencies": {
-    "@bouncingpixel/http-errors": "file:../http-errors/",
+    "@bouncingpixel/http-errors": "1.0.0",
     "axios": "^0.15.3",
     "nconf": "^0.8.4",
     "winston": "^2.3.0"
