@@ -26,6 +26,9 @@ The following configuration keys should be defined to use this module:
     Required for any rackspace capability. This is the API Key required to authenticate with Rackspace instead of using a password.
 
 #### Optional
+- `rackspaceDirectory`
+    Optional config to place all uploads in a subdirectory. Useful when wanting to separate testing and production.
+    While one could use `rackspaceContainer` to the same effect, some users may have a limitation that requires subdirectories.
 - `rackspaceMosso`
     Required only for the direct-to-rackspace uploads. Each account has a URL with a folder that starts with "Mosso"
 - `rackspaceHmacKey`
@@ -65,9 +68,15 @@ router.post('/uploadImage', uploadResizedImage([
       // return just the name portion of the filename of the file the user uploaded
       // alternatively, for random names that will not overlap:
       // look to use uuid's uuid.v4() or shortid's shortid.generate
+      // do not include extension. That is added for you based on the mimetype
       return path.parse(file.filename).name;
     },
-    extention: 'jpg',
+
+    mimetypes: ['image/png', 'image/jpeg'], // the allowed mimetypes that are not converted
+
+    allowConversion: ['image/png', 'image/jpeg'], // could be false to stop conversions or true to convert all
+                                                  // if a conversion happens, it will be to the first mimetype (png)
+
     out: {
       // keep the original with default name as well by doing this:
       '': [],
@@ -117,13 +126,17 @@ router.post('/uploadFile', uploadFile([
     isRequired: true,
     maxSize: 10485760, // optional maximum file size, this is 10MB. defaults to allow all sizes
     maxFiles: 1, // the maximum number of files uploaded with this field. defaults to 1
+
     filename: (req, file) => {
       // return the full tilename
       // alternatively, for random names that will not overlap:
       // look to use uuid's uuid.v4() or shortid's shortid.generate
       // then append the extesion to it (path.parse(file.filename).ext)
       return file.filename;
-    }
+    },
+
+    mimetypes: ['image/png', 'image/jpeg'] // the allowed mimetypes that are not converted
+
   },
   // can have multiple fields as well, but only 1 file uploaded per field
 ]));
