@@ -11,6 +11,9 @@ const fsunlink = bluebird.promisify(fs.unlink);
 
 const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
 
+const nconf = require('nconf');
+const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
+
 const gm = require('gm');
 const imageMagick = gm.subClass({ imageMagick: true });
 
@@ -25,8 +28,33 @@ const uploadStorage = multer.diskStorage({
   }
 });
 const uploaderFactory = multer({storage: uploadStorage});
+const checkFileMimeFactory = require('./check-file-mime-factory');
 
 const RackspaceService = require('../services/rackspace-service');
+
+function validateFieldSpec(field) {
+  if (field.mimetypes === null) {
+    throw new Error('Missing mimetypes specification for upload');
+  }
+
+  if (Array.isArray(field.mimetypes) && field.mimetypes.length === 0) {
+    throw new Error('Mimetypes spec when an array must contain at least 1 item');
+  }
+
+  if (field.field == null || typeof field.field !== 'string' || field.field.length === 0) {
+    throw new Error('The field for uploads must be set, must be a string, and must be a valid field name');
+  }
+
+  if (field.out == null || Object.keys(field.out).length === 0) {
+    throw new Error('Missing out specification for upload');
+  }
+
+  if (field.maxSize != null && typeof field.maxSize !== 'number') {
+    throw new Error('Max Size must be a number if set');
+  }
+
+  return true;
+}
 
 // fields: an array of objects containing:
 //    field: the name of the POST field with the file
@@ -34,7 +62,10 @@ const RackspaceService = require('../services/rackspace-service');
 //    maxSize: optional int to denote the maximum file size in bytes that is allowed.
 //    filename: the name of the file to use
 //              receives 2 parameters: req and the uploaded filename. returns filename excluding extension
-//    extention: the desired final extension to use (will convert from any to desired)
+//    mimetypes: the allowed mime types to be uploaded, will be based on the extension of the file uploaded.
+//               If empty or unset, this will error out.
+//    allowConversion: can be falsey to do no conversions. If true, will convert anything not in `mimetypes` to the first listed.
+//                     Can also be an array of mimetypes that are allowed to be converted.
 //    out: object where key is a string that will be inserted into the filename (filename + key + extension)
 //         the value points to an array of objects with (or an empty array to just make sure extension is correct):
 //              fn: string (crop, resize, etc; functions from imageMagick)
@@ -45,6 +76,7 @@ module.exports = function(fields) {
       next();
     };
   }
+  fields.forEach(validateFieldSpec);
 
   const uploader = uploaderFactory.fields(fields.map(function(item) {
     return { name: item.field, maxCount: item.maxFiles || 1 };
@@ -63,10 +95,20 @@ module.exports = function(fields) {
       }
 
       if (fieldInfo.maxSize && req.files[fieldName] && req.files[fieldName].length) {
+        const mimetypes = fieldInfo.mimetypes;
+        const allowConversion = fieldInfo.allowConversion;
+
         const tooLarge = req.files[fieldName].filter(f => f.size > fieldInfo.maxSize);
+        const invalidMimes = req.files[fieldName].filter(checkFileMimeFactory(mimetypes, allowConversion));
+
         if (tooLarge.length) {
           const files = tooLarge.map(f => f.filename).join(', ');
           return Promise.reject(new BadRequestError(`The files ${files} are too large`));
+        }
+
+        if (invalidMimes.length) {
+          const files = invalidMimes.map(f => f.filename).join(', ');
+          return Promise.reject(new BadRequestError(`The files ${files} are the incorrect type`));
         }
       }
 
@@ -93,8 +135,22 @@ module.exports = function(fields) {
           }
 
           const tmpFileName = file.filename;
-          const filename = fieldInfo.filename(req, tmpFileName, fileindex);
-          const extension = fieldInfo.extension;
+          const originalMime = mime.lookup(tmpFileName);
+
+          const filename = rackspaceDirectory + fieldInfo.filename(req, tmpFileName, fileindex);
+          let extension = mime.extension(originalMime);
+
+          const mimetypes = fieldInfo.mimetypes;
+
+          // if it's one of the allowed ones, we leave it. otherwise, we convert
+          // we've already validated we can convert it OR that the mime does match by this point
+          if (Array.isArray(mimetypes)) {
+            if (mimetypes.indexOf(originalMime) === -1) {
+              extension = mime.extension(mimetypes[0]);
+            }
+          } else if (mimetypes !== originalMime) {
+            extension = mime.extension(mimetypes);
+          }
 
           let uploads = {};
           req.uploads[fieldName].push(uploads);
@@ -176,14 +232,20 @@ function performActionsAndUpload(tmpFileName, newFileName, extension, operations
       return img[operation.fn].apply(img, operation.args);
     }, imageMagick(path.resolve(tmpPath, tmpFileName)));
 
-    imgToStream.stream(extension, function(err, stdout, _stderr) {
+    function callback(err, stdout, _stderr) {
       if (err) {
         reject(err);
         return;
       }
 
       resolve(stdout);
-    });
+    }
+
+    if (extension) {
+      imgToStream.stream(extension, callback);
+    } else {
+      imgToStream.stream(callback);
+    }
   }).then(function(stdout) {
     return RackspaceService.uploadStreamAsync({
       filename: newFileName,

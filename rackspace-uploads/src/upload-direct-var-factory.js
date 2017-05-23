@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const rackspaceContainer = nconf.get('rackspaceContainer');
 const rackspaceMosso = nconf.get('rackspaceMosso');
 const rackspaceHmacKey = nconf.get('rackspaceHmacKey');
+const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
 
 module.exports = function(options) {
   const redirectTo = options.redirectTo;
@@ -14,7 +15,7 @@ module.exports = function(options) {
   const expireAfter = options.expires || 15; // in minutes
 
   return function(req, res, next) {
-    const uploadPath = '/v1/' + rackspaceMosso + '/' + rackspaceContainer + '/' + fileNameFactory(req);
+    const uploadPath = '/v1/' + rackspaceMosso + '/' + rackspaceContainer + '/' + rackspaceDirectory + fileNameFactory(req);
     const redirectUrl = req.protocol + '://' + req.get('Host') + '/' + redirectTo;
 
     const expiresDate = new Date();

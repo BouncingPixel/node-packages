@@ -11,6 +11,9 @@ const fsunlink = bluebird.promisify(fs.unlink);
 
 const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
 
+const nconf = require('nconf');
+const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
+
 const tmpPath = path.resolve(__dirname, '../../../tmp/');
 
 const uploadStorage = multer.diskStorage({
@@ -28,8 +31,11 @@ const RackspaceService = require('../services/rackspace-service');
 // fields: an array of objects containing:
 //    field: the name of the POST field with the file
 //    isRequired: boolean to denote if the file is required (true) or optional (false)
+//    maxSize: optional maximum file size, this is 10MB. defaults to allow all sizes
 //    filename: function to determine the name of the file to store in Rackspace
 //              receives 2 parameters: req and the uploaded filename. return full file name including extension
+//    mimetypes: the allowed mime types to be uploaded, will be based on the extension of the file uploaded.
+//               If empty or unset, this will allow all files to be uploaded.
 module.exports = function(fields) {
   if (!fields || fields.length === 0) {
     return function(req, res, next) {
@@ -54,10 +60,19 @@ module.exports = function(fields) {
       }
 
       if (fieldInfo.maxSize && req.files[fieldName] && req.files[fieldName].length) {
+        const mimetypes = fieldInfo.mimetypes;
+
         const tooLarge = req.files[fieldName].filter(f => f.size > fieldInfo.maxSize);
+        const invalidMimes = req.files[fieldName].filter(checkFileMimeFactory(mimetypes));
+
         if (tooLarge.length) {
           const files = tooLarge.map(f => f.filename).join(', ');
           return Promise.reject(new BadRequestError(`The files ${files} are too large`));
+        }
+
+        if (invalidMimes.length) {
+          const files = invalidMimes.map(f => f.filename).join(', ');
+          return Promise.reject(new BadRequestError(`The files ${files} are the incorrect type`));
         }
       }
 
@@ -82,7 +97,7 @@ module.exports = function(fields) {
           }
 
           const tmpFileName = file.filename;
-          const filename = fieldInfo.filename(req, tmpFileName, fileindex);
+          const filename = rackspaceDirectory + fieldInfo.filename(req, tmpFileName, fileindex);
 
           req.uploads[fieldName].push(filename);
 
