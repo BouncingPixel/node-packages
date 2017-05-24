@@ -17,7 +17,7 @@ const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
 const gm = require('gm');
 const imageMagick = gm.subClass({ imageMagick: true });
 
-const tmpPath = path.resolve(__dirname, '../../../tmp/');
+const tmpPath = nconf.get('rackspaceTmpDir') || require('os').tmpdir();
 
 const uploadStorage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -30,7 +30,7 @@ const uploadStorage = multer.diskStorage({
 const uploaderFactory = multer({storage: uploadStorage});
 const checkFileMimeFactory = require('./check-file-mime-factory');
 
-const RackspaceService = require('../services/rackspace-service');
+const RackspaceService = require('./rackspace-service');
 
 function validateFieldSpec(field) {
   if (field.mimetypes === null) {

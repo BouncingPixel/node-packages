@@ -14,7 +14,8 @@ const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
 const nconf = require('nconf');
 const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
 
-const tmpPath = path.resolve(__dirname, '../../../tmp/');
+// defaults to the tmpdir returned by `os`, though
+const tmpPath = nconf.get('rackspaceTmpDir') || require('os').tmpdir();
 
 const uploadStorage = multer.diskStorage({
   destination: function(req, file, cb) {
@@ -26,7 +27,7 @@ const uploadStorage = multer.diskStorage({
 });
 const uploaderFactory = multer({storage: uploadStorage});
 
-const RackspaceService = require('../services/rackspace-service');
+const RackspaceService = require('./rackspace-service');
 
 // fields: an array of objects containing:
 //    field: the name of the POST field with the file

@@ -26,6 +26,8 @@ The following configuration keys should be defined to use this module:
     Required for any rackspace capability. This is the API Key required to authenticate with Rackspace instead of using a password.
 
 #### Optional
+- `rackspaceTmpDir`
+    Optional path to the tmp directory. Will default to the OS's tmp directory as defined by [Node's OS package](https://nodejs.org/api/os.html#os_os_tmpdir).
 - `rackspaceDirectory`
     Optional config to place all uploads in a subdirectory. Useful when wanting to separate testing and production.
     While one could use `rackspaceContainer` to the same effect, some users may have a limitation that requires subdirectories.
@@ -173,6 +175,9 @@ In the case where many users may be uploading images at any time, this may be th
      the result of the `fileNameFactory(req)` + the filename in the file-input field (fetchable with JS).
 
 ## Troubleshooting
+
+_Uploads are 0 bytes_
+Check if Imagemagick is installed correctly. On Windows, be certain to install the legacy executables in the installer.
 
 _req.body is empty/null/undefined_
 Be sure to set the `enctype` in the HTML form to `multipart/form-data`.
