@@ -52,7 +52,9 @@ module.exports = function AutoAlgolia(schema, initOptions) {
       const objId = obj._id ? obj._id.toString() : obj.id;
 
       index.deleteObject(objId, function(err) {
-        logger.warn(err);
+        if (err) {
+          logger.warn(err);
+        }
         done();
       });
     },
@@ -64,7 +66,9 @@ module.exports = function AutoAlgolia(schema, initOptions) {
       }
 
       index.saveObject(castToObject(obj), function(err) {
-        logger.warn(err);
+        if (err) {
+          logger.warn(err);
+        }
         done();
       });
     }
@@ -99,9 +103,13 @@ module.exports = function AutoAlgolia(schema, initOptions) {
     for (let prop in updater) {
       if (prop[0] !== '$') {
         if (removeIfFieldSet.indexOf(prop) !== -1) {
-          shouldRemove = shouldRemove || updater[prop];
+          shouldRemove = shouldRemove || !!updater[prop];
           shouldUpdate = shouldUpdate || !updater[prop];
+        } else if (removeIfFieldSet.indexOf('!' + prop) !== -1) {
+          shouldRemove = shouldRemove || !updater[prop];
+          shouldUpdate = shouldUpdate || !!updater[prop];
         }
+
         if (updateIfAnyField.indexOf(prop) !== -1) {
           shouldUpdate = true;
         }
@@ -112,7 +120,10 @@ module.exports = function AutoAlgolia(schema, initOptions) {
         const fieldVals = updater[prop];
         for (let p in fieldVals) {
           if (removeIfFieldSet.indexOf(p) !== -1) {
-            shouldRemove = shouldRemove || fieldVals[p];
+            shouldRemove = shouldRemove || !!fieldVals[p];
+            shouldUpdate = shouldUpdate || !fieldVals[p];
+          } else if (removeIfFieldSet.indexOf('!' + p) !== -1) {
+            shouldRemove = shouldRemove || !!fieldVals[p];
             shouldUpdate = shouldUpdate || !fieldVals[p];
           }
           if (updateIfAnyField.indexOf(p) !== -1) {
@@ -150,10 +161,14 @@ module.exports = function AutoAlgolia(schema, initOptions) {
 
       let i = 0;
       for (i = 0; i < removeFieldsCount; i++) {
-        if (item.isModified(removeIfFieldSet[i])) {
-          shouldRemove = shouldRemove || item[removeIfFieldSet[i]];
-          // even if one field states to remove, this is ok
-          shouldUpdate = shouldUpdate || !item[removeIfFieldSet[i]];
+        const isNegated = removeIfFieldSet[i][0] === '!';
+        const fieldName = isNegated ? removeIfFieldSet[i].substring(1) : removeIfFieldSet[i];
+
+        if (item.isModified(fieldName)) {
+          const setRemove = isNegated ? !item[fieldName] : !!item[fieldName];
+
+          shouldRemove = shouldRemove || setRemove;
+          shouldUpdate = shouldUpdate || !setRemove;
         }
       }
       for (i = 0; i < updateFieldsCount; i++) {
@@ -173,24 +188,52 @@ module.exports = function AutoAlgolia(schema, initOptions) {
   }
 
   // instance members to save or remove an object from Algolia
-  schema.methods.saveToAlgolia = function(done) {
-    algoliaFunctions.update(this, done);
+  schema.methods.saveToAlgolia = function() {
+    const _this = this;
+
+    return new Promise((resolve, reject) => {
+      algoliaFunctions.update(_this, function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
   };
 
-  schema.methods.removeFromAlgolia = function(done) {
-    algoliaFunctions.remove(this, done);
+  schema.methods.removeFromAlgolia = function() {
+    const _this = this;
+
+    return new Promise((resolve, reject) => {
+      algoliaFunctions.remove(_this, function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
   };
 
   // static functions to search or remove an object from Algolia
-  schema.statics.removeIdFromAlgolia = function(id, done) {
-    algoliaFunctions.remove({id: id}, done);
+  schema.statics.removeIdFromAlgolia = function(id) {
+    return new Promise((resolve, reject) => {
+      algoliaFunctions.remove({id: id}, function(err) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
+    });
   };
 
   schema.statics.findInAlgolia = function() {
     return index.apply(index, arguments);
   };
 
-  schema.statics.clearAlgoliaIndex = function(done) {
-    return index.clearIndex(done);
+  schema.statics.clearAlgoliaIndex = function() {
+    return index.clearIndex();
   };
 };

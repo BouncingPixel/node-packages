@@ -1,13 +1,22 @@
 # algolia
 
-Helpers for Algolia.
+Server side helpers for Algolia.
 Currently only has a Mongoose model plugin that extends Mongoose models for Algolia methods.
+For client side, just work directly with the `algoliasearch` package.
 
 ## Working With
 
 ### Requirements
 
 - NodeJS 6 LTS
+- An Algolia account
+
+### Free Algolia requirements
+
+Using the Free plan on Algolia requires the use of the Powered By Logos.
+Use any of the logos in the `freeplan-logos` directory and include it with the results or on the search box.
+"All that we ask is a link back to Algolia via a logo next to the search bar letting the world know that your search is powered by Algolia."
+[Download Powered By ZIP file](https://www.algolia.com/powered-by-algolia.zip)
 
 ### Configuration
 
