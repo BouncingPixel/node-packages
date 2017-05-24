@@ -1,0 +1,41 @@
+{
+  "name": "@bouncingpixel/default-express",
+  "version": "0.2.0",
+  "description": "The default express configuration for most projects",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/default-express"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": "6.x"
+  },
+  "dependencies": {
+    "@bouncingpixel/auto-static-routes": "^0.4.0",
+    "@bouncingpixel/dust-helpers": "^0.1.0",
+    "@bouncingpixel/error-router": "^0.5.0",
+    "@bouncingpixel/http-errors": "^1.0.0",
+    "@bouncingpixel/universal-response": "^0.2.0",
+    "body-parser": "^1.15.1",
+    "compression": "^1.6.2",
+    "connect-flash": "^0.1.1",
+    "consolidate": "^0.14.5",
+    "cookie-parser": "^1.4.2",
+    "csurf": "^1.9.0",
+    "dustjs-helpers": "1.7.3",
+    "dustjs-linkedin": "2.7.5",
+    "express": "^4.13.4",
+    "express-session": "^1.14.2",
+    "express-winston": "^2.1.2",
+    "nconf": "^0.8.4",
+    "winston": "^2.3.0"
+  }
+}
