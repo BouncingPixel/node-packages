@@ -94,11 +94,11 @@ module.exports = function(fields) {
         }
       }
 
-      if (fieldInfo.maxSize && req.files[fieldName] && req.files[fieldName].length) {
+      if (req.files[fieldName] && req.files[fieldName].length) {
         const mimetypes = fieldInfo.mimetypes;
         const allowConversion = fieldInfo.allowConversion;
 
-        const tooLarge = req.files[fieldName].filter(f => f.size > fieldInfo.maxSize);
+        const tooLarge = fieldInfo.maxSize ? req.files[fieldName].filter(f => f.size > fieldInfo.maxSize) : [];
         const invalidMimes = req.files[fieldName].filter(checkFileMimeFactory(mimetypes, allowConversion));
 
         if (tooLarge.length) {
