@@ -37,7 +37,7 @@ function addRoutesInDir(baseDir, directoryName, dir, router) {
         }
 
         files.forEach(function(file) {
-          addRoutesInDir(baseDir, path.join(dir, file), router);
+          addRoutesInDir(baseDir, directoryName, path.join(dir, file), router);
         });
       });
     } else {
