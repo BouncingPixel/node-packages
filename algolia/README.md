@@ -24,11 +24,11 @@ This module, like many other `@bouncingpixel` modules, relies on nconf.
 The following configuration keys should be defined to use this module:
 
 #### Required
-- `algoliaAppId`
+- `client:algoliaAppId`
   The ID of the app in Algolia containing all the indecies.
 - `algoliaApiKey`
   The read+write API key used on the server side. This should not be exposed to the client side.
-- `algoliaIndexPrefix`
+- `client:algoliaIndexPrefix`
   All indecies should be named with the prefix, followed by underscore, followed by the name of the data model.
   The prefix allows for multiple instances (dev, staging, prod, per-user etc) to share an app ID and not conflict.
   Algolia does not have a naming standard, but this is what we have come up with and decided to follow.

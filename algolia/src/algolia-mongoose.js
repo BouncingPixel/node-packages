@@ -4,10 +4,10 @@ const algoliasearch = require('algoliasearch');
 const nconf = require('nconf');
 const logger = require('winston');
 
-const algoliaIndexPrefix = nconf.get('algoliaIndexPrefix');
+const algoliaIndexPrefix = nconf.get('client:algoliaIndexPrefix');
 
-const client = (nconf.get('algoliaAppId') && nconf.get('algoliaApiKey')) ?
-  algoliasearch(nconf.get('algoliaAppId'), nconf.get('algoliaApiKey')) :
+const client = (nconf.get('client:algoliaAppId') && nconf.get('algoliaApiKey')) ?
+  algoliasearch(nconf.get('client:algoliaAppId'), nconf.get('algoliaApiKey')) :
   null;
 
 function defaultIncludeInIndex(obj) {
