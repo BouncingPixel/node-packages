@@ -19,7 +19,7 @@
     "node": "6.x"
   },
   "dependencies": {
-    "@bouncingpixel/auto-static-routes": "^0.4.0",
+    "@bouncingpixel/auto-static-routes": "^0.4.1",
     "@bouncingpixel/dust-helpers": "^0.1.0",
     "@bouncingpixel/express-async-patch": "^0.1.0",
     "@bouncingpixel/error-router": "^0.5.0",

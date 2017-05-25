@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/auto-static-routes",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Generates express routes automatically for static dust pages",
   "main": "index.js",
   "scripts": {
