@@ -1,0 +1,28 @@
+{
+  "name": "@bouncingpixel/express-async-patch",
+  "version": "0.1.0",
+  "description": "Patches Express 4.x to support generators (via bluebird-coroutine) and async",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/express-async-patch"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": "6.x"
+  },
+  "dependencies": {
+    "bluebird": "^3.4.7"
+  },
+  "peerDependencies": {
+    "express": "^4.13.4",
+    "methods": "^1.1.2"
+  }
+}
