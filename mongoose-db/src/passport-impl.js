@@ -11,7 +11,7 @@ module.exports = function(User, ssoExtendProfileFn) {
 
     deserializeUser: function(info, req) {
       const obj = JSON.parse(info);
-      return User.findOne({_id: obj._id});
+      return User.findOne({_id: obj.id});
     },
 
     findUserById: function(id) {
@@ -51,8 +51,10 @@ module.exports = function(User, ssoExtendProfileFn) {
     },
 
     successLogin: function(user, lockout) {
-      lockout.failedCount = 0;
-      return lockout.save();
+      if (lockout) {
+        lockout.failedCount = 0;
+        return lockout.save();
+      }
     },
 
     failedLogin: function(user, lockout, lockedUntilTime) {
@@ -138,7 +140,7 @@ module.exports = function(User, ssoExtendProfileFn) {
     },
 
     isUserRoleAtleast: function(user, desiredRole) {
-      return req.user.isRoleAtLeast(roleName);
+      return user.isRoleAtLeast(desiredRole);
     }
 
   };

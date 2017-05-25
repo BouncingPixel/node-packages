@@ -1,3 +1,5 @@
+const passport = require('passport');
+
 function generalLogin(req, user, done) {
   if (!user) {
     return done(new NotAuthorizedError('Invalid username or password'));

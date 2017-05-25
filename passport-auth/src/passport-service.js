@@ -14,8 +14,8 @@ module.exports = function serviceFactory(impl) {
   const PassportService = {
 
     serializeUser: function(user, done) {
-      impl
-        .serializeUser(user)
+      Promise
+        .resolve(impl.serializeUser(user))
         .then(function(info) {
           done(null, info);
         })
@@ -25,8 +25,8 @@ module.exports = function serviceFactory(impl) {
     },
 
     deserializeUser: function(req, info, done) {
-      impl
-        .deserializeUser(info, req)
+      Promise
+        .resolve(impl.deserializeUser(info, req))
         .then(function(user) {
           done(null, user);
         })
@@ -63,10 +63,7 @@ module.exports = function serviceFactory(impl) {
         }
 
         if (isValid) {
-          if (lockInfo) {
-            yield impl.successLogin(user, lockInfo);
-          }
-
+          yield impl.successLogin(user, lockInfo);
           return user;
         } else {
           const maxFailTries = parseInt(nconf.get('maxFailTries'), 10);

@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/passport-auth",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Express authentication handling with Passport",
   "main": "index.js",
   "scripts": {
