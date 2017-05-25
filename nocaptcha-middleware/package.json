@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/nocaptcha-middleware",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Express middleware for working with Google's NoCaptcha",
   "main": "index.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "node": "6.x"
   },
   "dependencies": {
-    "@bouncingpixel/http-errors": "1.0.0",
+    "@bouncingpixel/http-errors": "^1.0.0",
     "axios": "^0.15.3",
     "nconf": "^0.8.4",
     "winston": "^2.3.0"
