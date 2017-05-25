@@ -32,7 +32,7 @@ module.exports = function(app, oldToNewRedirects) {
 
     const hasParams = oldUrl.indexOf('/:') !== -1;
 
-    router.get(oldUrl, function(req, res) {
+    app.get(oldUrl, function(req, res) {
       if (!hasParams) {
         res.redirect(redirectCode, newUrl);
         return;

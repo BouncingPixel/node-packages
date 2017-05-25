@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/express-redirector",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A utility for mapping old URLs to new URLs and specifying if 302 or 301 code",
   "main": "index.js",
   "scripts": {
