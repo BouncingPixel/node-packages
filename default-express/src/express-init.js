@@ -29,6 +29,7 @@ try {
 }
 
 const app = express();
+require('@bouncingpixel/express-async-patch')(app);
 
 winston.debug('Configuring express for dust using consolidate');
 // require in our custom helpers, will expose them to dust for us
