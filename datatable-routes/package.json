@@ -4,6 +4,10 @@
   "description": "A route handler for Datatables that uses an ORM to select data",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

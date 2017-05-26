@@ -4,6 +4,10 @@
   "description": "Generates express routes automatically for static dust pages",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

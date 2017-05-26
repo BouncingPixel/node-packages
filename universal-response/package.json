@@ -4,6 +4,10 @@
   "description": "Extra Express responses for routes that are both rendered HTML and XHR",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

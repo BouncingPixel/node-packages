@@ -151,5 +151,5 @@ module.exports = function makeErrorHandler(inoptions) {
 
     // nothing found
     done();
-  };
+  }
 };

@@ -1,9 +1,13 @@
 {
   "name": "@bouncingpixel/dust-helpers",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A collection of Dust helpers broken out by purpose",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

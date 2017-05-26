@@ -26,6 +26,7 @@ const uploadStorage = multer.diskStorage({
   }
 });
 const uploaderFactory = multer({storage: uploadStorage});
+const checkFileMimeFactory = require('./check-file-mime-factory');
 
 const RackspaceService = require('./rackspace-service');
 

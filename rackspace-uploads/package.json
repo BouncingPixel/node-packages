@@ -1,9 +1,13 @@
 {
   "name": "@bouncingpixel/rackspace-uploads",
-  "version": "0.7.5",
+  "version": "0.7.6",
   "description": "Express middleware to handle Rackspace uploads",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

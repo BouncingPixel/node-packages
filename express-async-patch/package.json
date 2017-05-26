@@ -1,9 +1,13 @@
 {
   "name": "@bouncingpixel/express-async-patch",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Patches Express 4.x to support generators (via bluebird-coroutine) and async",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

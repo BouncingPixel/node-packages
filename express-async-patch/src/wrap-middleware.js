@@ -52,7 +52,7 @@ function tryEvalFor(str) {
   let c = null;
   try {
     c = eval(str);
-  } catch(_e) {
+  } catch (_e) {
     c = null;
   }
 

@@ -16,11 +16,13 @@ function initWebpackDev(app) {
     });
 
     app.use(devMiddlewareInst);
-  } catch(_e) {
+  } catch (_e) {
+    // do nothing, it's not a disaster if it doesnt work
   }
 }
 
 function doNothing() {
+  // we do nothing in production mode
 }
 
 module.exports = process.env.NODE_ENV !== 'production' && webpackConfigPath ?

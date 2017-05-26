@@ -5,6 +5,10 @@
   "main": "src/server.js",
   "browser": "src/browser.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

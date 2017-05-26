@@ -1,16 +1,15 @@
 {
-  "name": "@bouncingpixel/http-errors",
+  "name": "@bouncingpixel/node-packages",
+  "private": true,
   "version": "1.0.0",
-  "description": "Error objects for HTTP status codes that can be thrown with status set",
-  "main": "index.js",
+  "description": "Collection of home-brew packages shared between apps",
   "scripts": {
-  },
-  "publishConfig": {
-    "access": "public"
+    "lint": "eslint .",
+    "precommit": "npm run lint"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BouncingPixel/node-packages/tree/master/http-errors"
+    "url": "https://github.com/BouncingPixel/node-packages/"
   },
   "author": "Matt Hall <mhall@bouncingpixel.com>",
   "license": "MIT",
@@ -19,6 +18,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "devDependencies": {
-    "typescript": "^2.2.1"
+    "eslint": "^3.19.0",
+    "husky": "^0.13.3"
   }
 }

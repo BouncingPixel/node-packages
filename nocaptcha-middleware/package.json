@@ -4,6 +4,10 @@
   "description": "Express middleware for working with Google's NoCaptcha",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

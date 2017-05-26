@@ -1,9 +1,13 @@
 {
   "name": "@bouncingpixel/default-express",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "The default express configuration for most projects",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -20,9 +24,9 @@
   },
   "dependencies": {
     "@bouncingpixel/auto-static-routes": "^0.4.1",
-    "@bouncingpixel/dust-helpers": "^0.1.0",
-    "@bouncingpixel/express-async-patch": "^0.1.0",
-    "@bouncingpixel/error-router": "^0.5.0",
+    "@bouncingpixel/dust-helpers": "^0.2.0",
+    "@bouncingpixel/error-router": "^0.5.2",
+    "@bouncingpixel/express-async-patch": "^0.1.1",
     "@bouncingpixel/http-errors": "^1.0.0",
     "@bouncingpixel/universal-response": "^0.2.0",
     "body-parser": "^1.15.1",

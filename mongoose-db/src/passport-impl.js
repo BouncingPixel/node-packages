@@ -1,5 +1,3 @@
-const mongoose = require('mongoose');
-
 const LoginLocker = require('../models/login-locker');
 const RememberToken = require('../models/remember-token');
 
@@ -9,7 +7,7 @@ module.exports = function(User, ssoExtendProfileFn) {
       return JSON.stringify({id: user._id.toString()});
     },
 
-    deserializeUser: function(info, req) {
+    deserializeUser: function(info, _req) {
       const obj = JSON.parse(info);
       return User.findOne({_id: obj.id});
     },
@@ -70,7 +68,7 @@ module.exports = function(User, ssoExtendProfileFn) {
       return lockout.save();
     },
 
-    successTokenLogin: function(user, lockout) {
+    successTokenLogin: function(user, _lockout) {
       user.logintoken = null;
       user.tokenexpire = null;
       return user.save();
@@ -103,7 +101,7 @@ module.exports = function(User, ssoExtendProfileFn) {
     associateUserForSSO: function(user, profile) {
       user[profile.provider + 'Id'] = profile.id;
 
-      if (ssoAssociate) {
+      if (ssoExtendProfileFn) {
         ssoExtendProfileFn(user, profile);
       }
 

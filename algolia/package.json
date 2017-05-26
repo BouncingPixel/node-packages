@@ -1,9 +1,13 @@
 {
   "name": "@bouncingpixel/algolia",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Helpers for algolia, namely a Mongoose model plugin",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -19,6 +23,7 @@
     "node": "6.x"
   },
   "dependencies": {
+    "@bouncingpixel/http-errors": "^1.0.0",
     "algoliasearch": "^3.22.2",
     "nconf": "^0.8.4",
     "winston": "^2.3.0"

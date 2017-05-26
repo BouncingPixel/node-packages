@@ -4,6 +4,8 @@ const algoliasearch = require('algoliasearch');
 const nconf = require('nconf');
 const logger = require('winston');
 
+const NotFoundError = require('@bouncingpixel/http-errors').NotFoundError;
+
 const algoliaIndexPrefix = nconf.get('client:algoliaIndexPrefix');
 
 const client = (nconf.get('client:algoliaAppId') && nconf.get('algoliaApiKey')) ?
@@ -144,7 +146,7 @@ module.exports = function AutoAlgolia(schema, initOptions) {
           done(null, item);
         });
       } else if (errorsOnNotFound) {
-        return done(ServerErrors.NotFound('The item was not found.'));
+        return done(new NotFoundError('The item was not found.'));
       }
 
       return done();

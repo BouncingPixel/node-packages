@@ -3,11 +3,8 @@
 const nconf = require('nconf');
 const bluebird = require('bluebird');
 const bcrypt = require('bcrypt');
-const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-const NotAuthorizedError = require('@bouncingpixel/http-errors').NotAuthorizedError;
-const AccountLockedError = require('@bouncingpixel/http-errors').AccountLockedError;
 const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
 
 module.exports = function serviceFactory(impl) {
@@ -138,7 +135,7 @@ module.exports = function serviceFactory(impl) {
       impl
         .consumeRememberMe(token)
         .then(function(userid) {
-          if (!userId) {
+          if (!userid) {
             return Promise.resolve(null);
           }
 
@@ -157,9 +154,10 @@ module.exports = function serviceFactory(impl) {
           done(err);
         });
     },
+
     function(user, done) {
       impl
-        .generateRememberMe(userid)
+        .generateRememberMe(user._id || user.id)
         .then(function(token) {
           done(null, token);
         })

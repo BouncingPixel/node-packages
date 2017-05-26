@@ -1,9 +1,13 @@
 {
   "name": "@bouncingpixel/passport-auth",
-  "version": "0.2.2",
+  "version": "0.3.1",
   "description": "Express authentication handling with Passport",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",
@@ -29,12 +33,5 @@
   },
   "peerDependencies": {
     "express": "^4.13.4"
-  },
-  "optionalDependencies": {
-    "passport-facebook": "^2.1.1",
-    "passport-google-oauth": "^1.0.0",
-    "passport-linkedin": "^1.0.0",
-    "passport-remember-me": "0.0.1",
-    "passport-twitter": "^1.0.4"
   }
 }

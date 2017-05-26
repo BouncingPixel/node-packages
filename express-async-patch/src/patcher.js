@@ -28,7 +28,7 @@ function patch(thing) {
       return function(p1, ...middlewares) {
         const args = [p1].concat(middlewares.map(wrapMiddleware));
         return oldFns[method].apply(this, args);
-      }
+      };
     }
   };
 

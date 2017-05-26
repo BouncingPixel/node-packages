@@ -4,6 +4,10 @@
   "description": "A utility for mapping old URLs to new URLs and specifying if 302 or 301 code",
   "main": "index.js",
   "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "repository": {
     "type": "git",

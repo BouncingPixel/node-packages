@@ -1,12 +1,14 @@
+const nconf = require('nconf');
 const passport = require('passport');
+const HttpErrors = require('@bouncingpixel/http-errors');
 
 function generalLogin(req, user, done) {
   if (!user) {
-    return done(new NotAuthorizedError('Invalid username or password'));
+    return done(new HttpErrors.NotAuthorizedError('Invalid username or password'));
   }
 
   if (user.isLocked) {
-    return done(new AccountLockedError('User account is locked'));
+    return done(new HttpErrors.AccountLockedError('User account is locked'));
   }
 
   const saveRedirectTo = req.session.redirectto;
