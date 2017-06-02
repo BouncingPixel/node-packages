@@ -9,6 +9,17 @@
 - NodeJS 6 LTS
 - other requirements
 
+### Installing
+
+Install the package using your JS package manager of choice, such as `npm` or `yarn`.
+
+For example, with `npm` or `yarn`:
+```
+$ npm install --save @bouncingpixel/{package-name}
+
+$ yarn add @bouncingpixel/{package-name}
+```
+
 ### Configuration
 
 This module, like many other `@bouncingpixel` modules, relies on nconf.
