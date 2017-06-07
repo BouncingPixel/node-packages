@@ -4,9 +4,18 @@ const winston = require('winston');
 const HttpErrors = require('@bouncingpixel/http-errors');
 
 module.exports = function(app) {
+  const routesFolder = nconf.get('routesPath') || path.resolve(process.cwd(), 'server/routes/');
+  app.use(require('@bouncingpixel/express-handler-routing')(routesFolder));
+
   // add ability to display static pages inside the views/static/ directory
-  const pagesFolder = nconf.get('autoStaticFolder') || 'pages';
-  app.use(require('@bouncingpixel/auto-static-routes')(path.resolve(process.cwd(), 'views'), pagesFolder));
+  const pagesFolder = nconf.get('viewPagesFolder') || 'pages';
+  app.use(
+    require('@bouncingpixel/express-view-routing')(
+      path.resolve(process.cwd(), app.get('views')),
+      pagesFolder,
+      app.get('view engine')
+    )
+  );
 
   // set up our general 404 error handler
   app.use(function(req, res, next) {

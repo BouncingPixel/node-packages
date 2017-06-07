@@ -15,9 +15,11 @@ This module, like many other `@bouncingpixel` modules, relies on nconf.
 The following configuration keys should be defined to use this module:
 
 See additional information for:
-- [auto-static-routes](https://github.com/BouncingPixel/node-packages/tree/master/auto-static-routes)
 - [dust-helpers](https://github.com/BouncingPixel/node-packages/tree/master/dust-helpers)
 - [error-router](https://github.com/BouncingPixel/node-packages/tree/master/error-router)
+- [express-async-patch](https://github.com/BouncingPixel/node-packages/tree/master/express-async-patch)
+- [express-handler-routing](https://github.com/BouncingPixel/node-packages/tree/master/express-handler-routing)
+- [express-view-routing](https://github.com/BouncingPixel/node-packages/tree/master/express-view-routing)
 - [http-errors](https://github.com/BouncingPixel/node-packages/tree/master/http-errors)
 - [universal-response](https://github.com/BouncingPixel/node-packages/tree/master/universal-response)
 - And any additional packages you may require in.
@@ -47,6 +49,10 @@ See additional information for:
   An optional object and have other keys defined within it. These keys are exported to the `/js/config.js` as well as Dust under `ENV.`
 - `webpackConfigPath`
   The path to the webpack config file if `webpack-dev-middleware` is desired.
+- `routesPath`
+  The path to the routes folder to automatically generate routes. Defaults to `./server/routes`.
+- `viewPagesFolder`
+  The name of the folder in the views directory to automatically generate routes. Defaults to `pages`.
 
 ### Using default-express
 
@@ -56,11 +62,15 @@ Install `@bouncingpixel/default-express`. Get the app. Configure any extra middl
 const DefaultExpress = require('@bouncingpixel/default-express');
 const app = DefaultExpress.app;
 
-app.get('/', function(req, res) {
-  res.render('index');
-});
+// you can add other routes and middleware here
 
 DefaultExpress.start(app);
 ```
 
-**NOTE** If you make use of the `passport-auth`, that package must be initialized before requiring in `default-express`.
+**NOTE** If you make use of `mongoose-db` and/or `passport-auth`, those package must be initialized before requiring in `default-express`.
+
+#### Adding routes
+
+See [express-handler-routing](https://github.com/BouncingPixel/node-packages/tree/master/express-handler-routing)
+
+Also See [express-view-routing](https://github.com/BouncingPixel/node-packages/tree/master/express-view-routing)
