@@ -57,19 +57,13 @@ module.exports = function(User, ssoExtendProfileFn) {
       return lockout.save();
     },
 
-    failedLogin: function(user, lowerEmail, lockout, lockedUntilTime) {
-      if (!lockout) {
-        lockout = new LoginLocker({
-          email: lowerEmail
-        });
-      }
+    failedLogin: function(user, email, _lockout) {
+      const updates = {
+        $inc: {failedCount: 1},
+        $currentDate: {lastAttempt: true}
+      };
 
-      if (lockedUntilTime != null) {
-        lockout.lockedUntil = new Date(lockedUntilTime);
-      }
-
-      lockout.failedCount += 1;
-      return lockout.save();
+      return LoginLocker.update({email: email}, updates, {upsert: true}).exec();
     },
 
     successTokenLogin: function(user, _lockout) {

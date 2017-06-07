@@ -14,7 +14,7 @@ const LoginLockerSchema = mongoose.Schema({
     default: 0
   },
 
-  lockedUntil: {
+  lastAttempt: {
     type: Date
   }
 }, {
