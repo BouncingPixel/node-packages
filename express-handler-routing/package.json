@@ -1,7 +1,7 @@
 {
-  "name": "@bouncingpixel/auto-static-routes",
-  "version": "0.4.1",
-  "description": "DEPRECATED: Replaced with @bouncingpixel/express-view-routing",
+  "name": "@bouncingpixel/express-handler-routing",
+  "version": "0.1.0",
+  "description": "Generates routes for Express based on the file structure of route files",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js src"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BouncingPixel/node-packages/tree/master/auto-static-routes"
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/express-handler-routing"
   },
   "author": "Matt Hall <mhall@bouncingpixel.com>",
   "license": "MIT",
@@ -23,6 +23,7 @@
     "node": "6.x"
   },
   "dependencies": {
+    "methods": "^1.1.2",
     "winston": "^2.3.0"
   },
   "peerDependencies": {
