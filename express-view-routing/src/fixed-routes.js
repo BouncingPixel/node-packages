@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const logger = require('winston');
 
+const endsWith = require('./ends-with');
 const makeSureExtHasDot = require('./extension-dot');
 const renderPage = require('./render-page');
 
@@ -46,11 +47,11 @@ function addRoutesInDir(baseDir, directoryName, dir, router, extension) {
       const dirLengthMinusExt = dir.length - extLength;
 
       // make sure it ends in the extension
-      if (dir.lastIndexOf(extension) !== dirLengthMinusExt) {
+      if (!endsWith(dir, extension)) {
         return;
       }
 
-      const isIndex = dir.lastIndexOf('/index' + extension) === (dirLengthMinusExt - 6);
+      const isIndex = endsWith(dir, '/index' + extension);
       const substrEnd = isIndex ? (dirLengthMinusExt - 6) : dirLengthMinusExt;
 
       const url = dir.substr(0, substrEnd);
@@ -67,7 +68,7 @@ function makeExpressPath(url) {
     return '/';
   }
 
-  return url.replace(/\/_([^/]+)/g, function(match, p) {
+  return url.replace(/\\/g, '/').replace(/\/_([^/]+)/g, function(match, p) {
     // if it is two underscores, then it is not a path parameter
     if (p[0] === '_') {
       return '/' + p;
