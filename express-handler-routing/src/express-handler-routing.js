@@ -42,11 +42,11 @@ function addRoutesInDir(baseDir, dir, router) {
       });
     } else {
       // make sure it ends in .js
-      if (dir.lastIndexOf('.js') !== (dir.length - 3)) {
+      if (!endsWith(dir, '.js')) {
         return;
       }
 
-      const isIndex = dir.lastIndexOf('/index.js') === (dir.length - 9);
+      const isIndex = endsWith(dir, '/index.js') === (dir.length - 9);
       const url = isIndex ? dir.substr(0, dir.length - 9) : dir.substr(0, dir.length - 3);
 
       const parameterizedUrl = makeExpressPath(url);
@@ -58,38 +58,51 @@ function addRoutesInDir(baseDir, dir, router) {
           logger.debug(`Adding middleware via use to "${parameterizedUrl}"`);
           router.use(parameterizedUrl, routeMethods);
         } else {
-          addRoutes(router, parameterizedUrl, routeMethods);
+          const before = makeSureIsArray(routeMethods.before);
+          const after = makeSureIsArray(routeMethods.after);
+
+          addRoutes(router, parameterizedUrl, routeMethods, before, after);
         }
       }
     }
   });
 }
 
-function addRoutes(router, baseUrl, routeMethods) {
+function addRoutes(router, baseUrl, routeMethods, parentBefore, parentAfter) {
   for (const item in routeMethods) {
     if (methods.indexOf(item) !== -1) {
       // if it is a method, then we mount it to the URL
       const method = item;
       const routeInfo = routeMethods[method];
-      const pre = routeInfo.pre || [];
+
+      const before = makeSureIsArray(routeInfo.before);
 
       // defaulting to empty array as a way to exclude from .concat
-      const handler = routeInfo.handler || [];
-      const post = routeInfo.post || [];
+      const handler = (routeInfo instanceof Function ? routeInfo : routeInfo.handler) || [];
+      const after = makeSureIsArray(routeInfo.after);
 
-      const routerArgs = [baseUrl].concat(pre).concat(handler).concat(post);
+      const routerArgs = [baseUrl]
+        .concat(parentBefore)
+        .concat(before)
+        .concat(handler)
+        .concat(after)
+        .concat(parentAfter);
 
       if (routerArgs.length === 1) {
-        logger.warn(`A route, "${baseUrl}", may not be performing any action due to missing handler, pre, and/or post`);
+        logger.warn(`A route, "${baseUrl}", may not be performing any action due to missing handler, before, and/or after`);
       }
 
       logger.debug(`Adding route ${method.toUpperCase()} "${baseUrl}"`);
       router[method].apply(router, routerArgs);
+    } else if (item === 'use') {
+      router.use(baseUrl, routeMethods.use);
     } else if (item.length && item[0] === '/') {
       // if its not a method and it starts with a /, we assume it is a nested set of routes
       const url = baseUrl !== '/' ? (baseUrl + item) : item;
+      const before = makeSureIsArray(routeMethods.before);
+      const after = makeSureIsArray(routeMethods.after);
 
-      addRoutes(router, url, routeMethods[item]);
+      addRoutes(router, url, routeMethods[item], parentBefore.concat(before), after.concat(parentAfter));
     } else {
       // if its not any of that, we warn the user of an invalid key
       logger.warn(`An invalid key, "${item}", exists on route object at path "${baseUrl}"`);
@@ -97,12 +110,28 @@ function addRoutes(router, baseUrl, routeMethods) {
   }
 }
 
+function endsWith(str, ending) {
+  if (str.length < ending.length) {
+    return false;
+  }
+
+  return str.substring(str.length - ending.length) === ending;
+}
+
+function makeSureIsArray(item) {
+  if (!item) {
+    return [];
+  }
+
+  return Array.isArray(item) ? item : [item];
+}
+
 function makeExpressPath(url) {
   if (!url || !url.length) {
     return '/';
   }
 
-  return url.replace(/\/_([^/]+)/g, function(match, p) {
+  return url.replace(/\\/g, '/').replace(/\/_([^/]+)/g, function(match, p) {
     // if it is two underscores, then it is not a path parameter
     if (p[0] === '_') {
       return '/' + p;
