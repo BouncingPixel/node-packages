@@ -103,6 +103,8 @@ function addRoutes(router, baseUrl, routeMethods, parentBefore, parentAfter) {
       const after = makeSureIsArray(routeMethods.after);
 
       addRoutes(router, url, routeMethods[item], parentBefore.concat(before), after.concat(parentAfter));
+    } else if (item === 'before' || item === 'after') {
+      // we can safely ignore these two
     } else {
       // if its not any of that, we warn the user of an invalid key
       logger.warn(`An invalid key, "${item}", exists on route object at path "${baseUrl}"`);
