@@ -4,7 +4,7 @@ const fs = require('fs');
 const logger = require('winston');
 
 const makeSureExtHasDot = require('./extension-dot');
-const renderPage = require('../render-page');
+const renderPage = require('./render-page');
 
 // this one is used in production
 function createFixedRouter(baseViewsDir, directoryName, extension) {
