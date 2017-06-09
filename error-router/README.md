@@ -37,3 +37,9 @@ Example code: 503 with `showView` set to "errors/oops" with the URL "blog/this-i
 - errors/5xx.dust
 - errors/error.dust
 - No template, just send the string
+
+For non-GET routes, the client will be redirected for non-XHR requests.
+The clients by default will be redirected back to the previous page.
+XHR clients will receive the error over JSON and will not be redirected.
+401 redirects are special in that they can be redirected to a specific page by setting `redirectOn401` in the options when initializing the error-router.
+The redirect location can also be changed by setting either `redirectTo` on the error object being thrown or by settings `errorRedirectTo` on the Express `req` object for the specific request.

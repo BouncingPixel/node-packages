@@ -75,7 +75,7 @@ module.exports = function makeErrorHandler(inoptions) {
         req.flash('error', logMessage);
       }
 
-      let redirectTo = err.redirectTo || req.url;
+      let redirectTo = err.redirectTo || req.errorRedirectTo || 'back';
       res.redirect(redirectTo);
 
       return;

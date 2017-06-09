@@ -1,2 +1,4 @@
 http-errors/
 pixel-validate/src/jquery.serialize-object.js
+node_modules/
+coverage/
