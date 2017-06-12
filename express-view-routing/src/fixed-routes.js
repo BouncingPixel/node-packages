@@ -14,7 +14,7 @@ function createFixedRouter(baseViewsDir, directoryName, extension) {
 
   // go through list of files and add routes for each of them
   const staticDir = path.join(baseViewsDir, directoryName);
-  addRoutesInDir(staticDir, directoryName, '/', router, makeSureExtHasDot(extension));
+  addRoutesInDir(staticDir, directoryName, '', router, makeSureExtHasDot(extension));
 
   // we return the router, even though this is async and the router is filled later
   // express is fine with this
@@ -51,9 +51,10 @@ function addRoutesInDir(baseDir, directoryName, dir, router, extension) {
         return;
       }
 
-      const isIndex = endsWith(dir, '/index' + extension);
-      const substrEnd = isIndex ? (dirLengthMinusExt - 6) : dirLengthMinusExt;
+      const checkIndexStr = path.sep + 'index' + extension;
+      const isIndex = endsWith(dir, checkIndexStr);
 
+      const substrEnd = dir.length - (isIndex ? checkIndexStr.length : extLength);
       const url = dir.substr(0, substrEnd);
 
       const parameterizedUrl = makeExpressPath(url);

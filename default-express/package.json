@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/default-express",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "description": "The default express configuration for most projects",
   "main": "index.js",
   "scripts": {
@@ -26,8 +26,8 @@
     "@bouncingpixel/dust-helpers": "^0.2.0",
     "@bouncingpixel/error-router": "^0.6.0",
     "@bouncingpixel/express-async-patch": "^0.1.1",
-    "@bouncingpixel/express-handler-routing": "^0.2.0",
-    "@bouncingpixel/express-view-routing": "^0.1.3",
+    "@bouncingpixel/express-handler-routing": "^0.2.2",
+    "@bouncingpixel/express-view-routing": "^0.1.4",
     "@bouncingpixel/http-errors": "^1.0.0",
     "@bouncingpixel/universal-response": "^0.2.0",
     "body-parser": "^1.15.1",

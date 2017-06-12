@@ -12,7 +12,7 @@ function createAllRoutes(baseViewsDir) {
 
   // go through list of files and add routes for each of them
   const staticDir = path.join(baseViewsDir);
-  addRoutesInDir(staticDir, '/', router);
+  addRoutesInDir(staticDir, '', router);
 
   // we return the router, even though this is async and the router is filled later
   // express is fine with this
@@ -46,8 +46,11 @@ function addRoutesInDir(baseDir, dir, router) {
         return;
       }
 
-      const isIndex = endsWith(dir, '/index.js') === (dir.length - 9);
-      const url = isIndex ? dir.substr(0, dir.length - 9) : dir.substr(0, dir.length - 3);
+      const checkIndexStr = path.sep + 'index.js';
+      const isIndex = endsWith(dir, checkIndexStr) === (dir.length - checkIndexStr.length);
+
+      const substrEnd = dir.length - (isIndex ? checkIndexStr.lenth : 3);
+      const url = dir.substr(0, substrEnd);
 
       const parameterizedUrl = makeExpressPath(url);
 
@@ -133,6 +136,7 @@ function makeExpressPath(url) {
     return '/';
   }
 
+  // normalize backslash to forward slash, change /__ to _ and /_ to /:
   return url.replace(/\\/g, '/').replace(/\/_([^/]+)/g, function(match, p) {
     // if it is two underscores, then it is not a path parameter
     if (p[0] === '_') {
