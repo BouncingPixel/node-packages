@@ -67,7 +67,7 @@ module.exports = function serviceFactory(impl) {
           const maxLockTime = parseInt(nconf.get('maxLockTime'), 10);
           let lockedUntilTime = undefined;
 
-          if (lockInfo.failedCount > maxFailTries) {
+          if (lockInfo && lockInfo.failedCount > maxFailTries) {
             const lockedForMs = Math.min(
               maxLockTime,
               Math.pow(lockInfo.failedCount - maxFailTries, 2) * 5
@@ -76,7 +76,7 @@ module.exports = function serviceFactory(impl) {
             lockedUntilTime = new Date().getTime() + lockedForMs;
           }
 
-          yield impl.failedLogin(user, lockInfo, lockedUntilTime);
+          yield impl.failedLogin(user, lowerEmail, lockInfo, lockedUntilTime);
           return false;
         }
       })().then(function(toReturn) {
