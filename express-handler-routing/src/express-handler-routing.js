@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const express = require('express');
+let express = require('express');
 const logger = require('winston');
 const methods = require('methods');
 
@@ -49,7 +49,7 @@ function addRoutesInDir(baseDir, dir, router) {
       const checkIndexStr = path.sep + 'index.js';
       const isIndex = endsWith(dir, checkIndexStr);
 
-      const substrEnd = dir.length - (isIndex ? checkIndexStr.lenth : 3);
+      const substrEnd = dir.length - (isIndex ? checkIndexStr.length : 3);
       const url = dir.substr(0, substrEnd);
 
       const parameterizedUrl = makeExpressPath(url);

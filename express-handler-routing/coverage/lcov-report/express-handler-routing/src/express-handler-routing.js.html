@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for express-handler-routing/src/express-handler-routing.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">all files</a> / <a href="index.html">express-handler-routing/src/</a> express-handler-routing.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">78.95% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>60/76</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">56.52% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>26/46</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">90% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>9/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">78.95% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>60/76</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line medium'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152</td><td class="line-coverage quiet"><span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">11×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">9×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">14×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-yes">36×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-yes">7×</span>
+<span class="cline-any cline-yes">4×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3×</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1×</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const fs = require('fs');
+const path = require('path');
+&nbsp;
+const express = require('express');
+const logger = require('winston');
+const methods = require('methods');
+&nbsp;
+// this one is used in production
+function createAllRoutes(baseViewsDir) {
+  // create an express router
+  const router = express.Router();
+&nbsp;
+  // go through list of files and add routes for each of them
+  const staticDir = path.join(baseViewsDir);
+  addRoutesInDir(staticDir, '/', router);
+&nbsp;
+  // we return the router, even though this is async and the router is filled later
+  // express is fine with this
+  return router;
+}
+&nbsp;
+// no callback as it doesn't really matter. we don't notify anything that we are done
+function addRoutesInDir(baseDir, dir, router) {
+  const fullDir = path.join(baseDir, dir);
+&nbsp;
+  fs.stat(fullDir, function(err, stats) {
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >      logger.warn(err);</span>
+<span class="cstat-no" title="statement not covered" >      return;</span>
+    }
+&nbsp;
+    if (stats.isDirectory()) {
+      fs.readdir(fullDir, function(err, files) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (err) {
+<span class="cstat-no" title="statement not covered" >          logger.warn(err);</span>
+<span class="cstat-no" title="statement not covered" >          return;</span>
+        }
+&nbsp;
+        files.forEach(function(file) {
+          addRoutesInDir(baseDir, path.join(dir, file), router);
+        });
+      });
+    } else {
+      // make sure it ends in .js
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (!endsWith(dir, '.js')) {
+<span class="cstat-no" title="statement not covered" >        return;</span>
+      }
+&nbsp;
+      const checkIndexStr = path.sep + 'index.js';
+      const isIndex = endsWith(dir, checkIndexStr);
+&nbsp;
+      const substrEnd = dir.length - (isIndex ? checkIndexStr.lenth : 3);
+      const url = dir.substr(0, substrEnd);
+&nbsp;
+      const parameterizedUrl = makeExpressPath(url);
+&nbsp;
+      const routeMethods = require(fullDir);
+&nbsp;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (routeMethods) {
+        <span class="missing-if-branch" title="if path not taken" >I</span>if (Object.getPrototypeOf(routeMethods) === express.Router) {
+<span class="cstat-no" title="statement not covered" >          logger.debug(`Adding middleware via use to "${parameterizedUrl}"`);</span>
+<span class="cstat-no" title="statement not covered" >          router.use(parameterizedUrl, routeMethods);</span>
+        } else {
+          const before = makeSureIsArray(routeMethods.before);
+          const after = makeSureIsArray(routeMethods.after);
+&nbsp;
+          addRoutes(router, parameterizedUrl, routeMethods, before, after);
+        }
+      }
+    }
+  });
+}
+&nbsp;
+function addRoutes(router, baseUrl, routeMethods, parentBefore, parentAfter) {
+  for (const item in routeMethods) {
+    if (methods.indexOf(item) !== -1) {
+      // if it is a method, then we mount it to the URL
+      const method = item;
+      const routeInfo = routeMethods[method];
+&nbsp;
+      const before = makeSureIsArray(routeInfo.before);
+&nbsp;
+      // defaulting to empty array as a way to exclude from .concat
+      const handler = (routeInfo instanceof Function ? routeInfo : routeInfo.handler) || <span class="branch-1 cbranch-no" title="branch not covered" >[];</span>
+      const after = makeSureIsArray(routeInfo.after);
+&nbsp;
+      const routerArgs = [baseUrl]
+        .concat(parentBefore)
+        .concat(before)
+        .concat(handler)
+        .concat(after)
+        .concat(parentAfter);
+&nbsp;
+      <span class="missing-if-branch" title="if path not taken" >I</span>if (routerArgs.length === 1) {
+<span class="cstat-no" title="statement not covered" >        logger.warn(`A route, "${baseUrl}", may not be performing any action due to missing handler, before, and/or after`);</span>
+      }
+&nbsp;
+      logger.debug(`Adding route ${method.toUpperCase()} "${baseUrl}"`);
+      router[method].apply(router, routerArgs);
+    } else <span class="missing-if-branch" title="if path not taken" >I</span>if (item === 'use') {
+<span class="cstat-no" title="statement not covered" >      router.use(baseUrl, routeMethods.use);</span>
+    } else <span class="missing-if-branch" title="else path not taken" >E</span>if (item.length &amp;&amp; item[0] === '/') {
+      // if its not a method and it starts with a /, we assume it is a nested set of routes
+      const url = baseUrl !== '/' ? (<span class="branch-0 cbranch-no" title="branch not covered" >baseUrl + item)</span> : item;
+      const before = makeSureIsArray(routeMethods.before);
+      const after = makeSureIsArray(routeMethods.after);
+&nbsp;
+      addRoutes(router, url, routeMethods[item], parentBefore.concat(before), after.concat(parentAfter));
+    } else <span class="cstat-no" title="statement not covered" >if (item === 'before' || item === 'after') {</span>
+      // we can safely ignore these two
+    } else {
+      // if its not any of that, we warn the user of an invalid key
+<span class="cstat-no" title="statement not covered" >      logger.warn(`An invalid key, "${item}", exists on route object at path "${baseUrl}"`);</span>
+    }
+  }
+}
+&nbsp;
+function endsWith(str, ending) {
+  <span class="missing-if-branch" title="if path not taken" >I</span>if (str.length &lt; ending.length) {
+<span class="cstat-no" title="statement not covered" >    return false;</span>
+  }
+&nbsp;
+  return str.substring(str.length - ending.length) === ending;
+}
+&nbsp;
+function makeSureIsArray(item) {
+  <span class="missing-if-branch" title="else path not taken" >E</span>if (!item) {
+    return [];
+  }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >  return Array.isArray(item) ? item : [item];</span>
+}
+&nbsp;
+function makeExpressPath(url) {
+  if (!url || !url.length) {
+    return '/';
+  }
+&nbsp;
+  // normalize backslash to forward slash, change /__ to _ and /_ to /:
+  return url.replace(/\\/g, '/').replace(/\/_([^/]+)/g, <span class="fstat-no" title="function not covered" >function(match, p) {</span>
+    // if it is two underscores, then it is not a path parameter
+<span class="cstat-no" title="statement not covered" >    if (p[0] === '_') {</span>
+<span class="cstat-no" title="statement not covered" >      return '/' + p;</span>
+    }
+&nbsp;
+    // otherwise, it is a path parameter
+<span class="cstat-no" title="statement not covered" >    return '/:' + p;</span>
+  });
+}
+&nbsp;
+module.exports = createAllRoutes;
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Mon Jun 12 2017 10:16:21 GMT-0500 (CDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
