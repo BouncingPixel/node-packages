@@ -46,9 +46,20 @@ module.exports = function serviceFactory(impl) {
           impl.findLockoutInfo(lowerEmail)
         ]);
 
-        if (lockInfo && lockInfo.lockedUntil && new Date() <= lockInfo.lockedUntil) {
-          // do absolutely nothing if locked
-          return false;
+        const maxFailTries = parseInt(nconf.get('maxFailTries'), 10);
+        if (lockInfo && lockInfo.lastAttempt && lockInfo.failedCount >= maxFailTries) {
+          const maxLockTime = parseInt(nconf.get('maxLockTime'), 10);
+
+          // sure, we recompute this every time, but our DB queries are atomic this way
+          const lockedForMs = Math.min(
+            maxLockTime,
+            Math.pow(lockInfo.failedCount - maxFailTries, 2) * 5
+          );
+
+          if ((lockInfo.lastAttempt.getTime() + lockedForMs) >= new Date().getTime()) {
+            // do absolutely nothing if locked
+            return false;
+          }
         }
 
         // TODO: add audit log
@@ -63,20 +74,7 @@ module.exports = function serviceFactory(impl) {
           yield impl.successLogin(user, lockInfo);
           return user;
         } else {
-          const maxFailTries = parseInt(nconf.get('maxFailTries'), 10);
-          const maxLockTime = parseInt(nconf.get('maxLockTime'), 10);
-          let lockedUntilTime = undefined;
-
-          if (lockInfo && lockInfo.failedCount > maxFailTries) {
-            const lockedForMs = Math.min(
-              maxLockTime,
-              Math.pow(lockInfo.failedCount - maxFailTries, 2) * 5
-            );
-
-            lockedUntilTime = new Date().getTime() + lockedForMs;
-          }
-
-          yield impl.failedLogin(user, lowerEmail, lockInfo, lockedUntilTime);
+          yield impl.failedLogin(user, lowerEmail, lockInfo);
           return false;
         }
       })().then(function(toReturn) {
