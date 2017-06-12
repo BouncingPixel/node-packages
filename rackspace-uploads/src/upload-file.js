@@ -1,19 +1,22 @@
 'use strict';
 
-const multer = require('multer');
+const async = require('async');
+const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
+const bluebird = require('bluebird');
+const bytes = require('bytes');
 const csrf = require('csurf');
 const mime = require('mime');
-const async = require('async');
-const bluebird = require('bluebird');
+const multer = require('multer');
+const nconf = require('nconf');
+
 const fs = require('fs');
 const path = require('path');
 const fsunlink = bluebird.promisify(fs.unlink);
 
-const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
+const checkFileMimeFactory = require('./check-file-mime-factory');
+const RackspaceService = require('./rackspace-service');
 
-const nconf = require('nconf');
 const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
-
 // defaults to the tmpdir returned by `os`, though
 const tmpPath = nconf.get('rackspaceTmpDir') || require('os').tmpdir();
 
@@ -26,9 +29,6 @@ const uploadStorage = multer.diskStorage({
   }
 });
 const uploaderFactory = multer({storage: uploadStorage});
-const checkFileMimeFactory = require('./check-file-mime-factory');
-
-const RackspaceService = require('./rackspace-service');
 
 // fields: an array of objects containing:
 //    field: the name of the POST field with the file
@@ -63,8 +63,9 @@ module.exports = function(fields) {
 
       if (fieldInfo.maxSize && req.files[fieldName] && req.files[fieldName].length) {
         const mimetypes = fieldInfo.mimetypes;
+        const maxSize = bytes.parse(fieldInfo.maxSize);
 
-        const tooLarge = req.files[fieldName].filter(f => f.size > fieldInfo.maxSize);
+        const tooLarge = req.files[fieldName].filter(f => f.size > maxSize);
         const invalidMimes = req.files[fieldName].filter(checkFileMimeFactory(mimetypes));
 
         if (tooLarge.length) {

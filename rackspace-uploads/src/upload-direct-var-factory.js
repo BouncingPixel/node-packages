@@ -1,7 +1,8 @@
 'use strict';
 
-const nconf = require('nconf');
 const crypto = require('crypto');
+const nconf = require('nconf');
+const bytes = require('bytes');
 
 const rackspaceContainer = nconf.get('rackspaceContainer');
 const rackspaceMosso = nconf.get('rackspaceMosso');
@@ -11,7 +12,7 @@ const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
 module.exports = function(options) {
   const redirectTo = options.redirectTo;
   const fileNameFactory = options.fileNameFactory;
-  const maxSize = options.maxSize || 10485760; // in bytes
+  const maxSize = bytes.parse(options.maxSize) || 10485760; // in bytes
   const expireAfter = options.expires || 15; // in minutes
 
   return function(req, res, next) {

@@ -1,24 +1,17 @@
 const mime = require('mime');
+const typeis = require('type-is');
 
-module.exports = function checkFileMimeFactory(mimetypes, allowConversion) {
+module.exports = function checkFileMimeFactory(mimetype, allowConversion) {
+  const mimetypes = Array.isArray(mimetype) ? mimetype : [mimetype];
+  const allowConversions = Array.isArray(allowConversion) ? allowConversion : [allowConversion];
+
   return function checkIfFileInvalid(file) {
     const originalMime = mime.lookup(file.filename);
 
-    if (!allowConversion) {
-      if (Array.isArray(mimetypes)) {
-        if (mimetypes.indexOf(originalMime) === -1) {
-          return true;
-        }
-      } else if (mimetypes !== originalMime) {
-        return true;
-      }
-    } else if (Array.isArray(allowConversion) && allowConversion.length > 0) {
-      // check to see if we allow conversion to this file type
-      if (allowConversion.indexOf(originalMime) === -1) {
-        return true;
-      }
+    if (allowConversion === true) {
+      return true;
     }
 
-    return false;
+    return typeis.is(originalMime, mimetypes) || typeis.is(originalMime, allowConversions);
   };
 };

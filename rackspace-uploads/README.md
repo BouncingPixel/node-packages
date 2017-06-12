@@ -75,9 +75,11 @@ router.post('/uploadImage', uploadResizedImage([
     },
 
     mimetypes: ['image/png', 'image/jpeg'], // the allowed mimetypes that are not converted
+                                            // this cannot include wildcards such as image/*
 
-    allowConversion: ['image/png', 'image/jpeg'], // could be false to stop conversions or true to convert all
-                                                  // if a conversion happens, it will be to the first mimetype (png)
+    allowConversion: ['image/*'], // could be false to stop conversions or true to convert all
+                                  // if a conversion happens, it will be to the first mimetype (png)
+                                  // this can include wildcards as well
 
     out: {
       // keep the original with default name as well by doing this:

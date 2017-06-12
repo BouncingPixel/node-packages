@@ -1,22 +1,25 @@
 'use strict';
 
-const multer = require('multer');
+const async = require('async');
+const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
+const bluebird = require('bluebird');
+const bytes = require('bytes');
 const csrf = require('csurf');
 const mime = require('mime');
-const async = require('async');
-const bluebird = require('bluebird');
-const path = require('path');
-const fs = require('fs');
-const fsunlink = bluebird.promisify(fs.unlink);
-
-const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
-
+const multer = require('multer');
 const nconf = require('nconf');
-const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
 
 const gm = require('gm');
 const imageMagick = gm.subClass({ imageMagick: true });
 
+const path = require('path');
+const fs = require('fs');
+const fsunlink = bluebird.promisify(fs.unlink);
+
+const checkFileMimeFactory = require('./check-file-mime-factory');
+const RackspaceService = require('./rackspace-service');
+
+const rackspaceDirectory = nconf.get('rackspaceDirectory') || '';
 const tmpPath = nconf.get('rackspaceTmpDir') || require('os').tmpdir();
 
 const uploadStorage = multer.diskStorage({
@@ -28,9 +31,6 @@ const uploadStorage = multer.diskStorage({
   }
 });
 const uploaderFactory = multer({storage: uploadStorage});
-const checkFileMimeFactory = require('./check-file-mime-factory');
-
-const RackspaceService = require('./rackspace-service');
 
 function validateFieldSpec(field) {
   if (field.mimetypes === null) {
@@ -97,8 +97,9 @@ module.exports = function(fields) {
       if (req.files[fieldName] && req.files[fieldName].length) {
         const mimetypes = fieldInfo.mimetypes;
         const allowConversion = fieldInfo.allowConversion;
+        const maxSize = bytes.parse(fieldInfo.maxSize);
 
-        const tooLarge = fieldInfo.maxSize ? req.files[fieldName].filter(f => f.size > fieldInfo.maxSize) : [];
+        const tooLarge = fieldInfo.maxSize ? req.files[fieldName].filter(f => f.size > maxSize) : [];
         const invalidMimes = req.files[fieldName].filter(checkFileMimeFactory(mimetypes, allowConversion));
 
         if (tooLarge.length) {
