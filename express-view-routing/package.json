@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/express-view-routing",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Generates routes for Express based on the file structure of view files",
   "main": "index.js",
   "scripts": {

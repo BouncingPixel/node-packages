@@ -12,7 +12,7 @@ function createAllRoutes(baseViewsDir) {
 
   // go through list of files and add routes for each of them
   const staticDir = path.join(baseViewsDir);
-  addRoutesInDir(staticDir, '', router);
+  addRoutesInDir(staticDir, '/', router);
 
   // we return the router, even though this is async and the router is filled later
   // express is fine with this
@@ -47,7 +47,7 @@ function addRoutesInDir(baseDir, dir, router) {
       }
 
       const checkIndexStr = path.sep + 'index.js';
-      const isIndex = endsWith(dir, checkIndexStr) === (dir.length - checkIndexStr.length);
+      const isIndex = endsWith(dir, checkIndexStr);
 
       const substrEnd = dir.length - (isIndex ? checkIndexStr.lenth : 3);
       const url = dir.substr(0, substrEnd);
