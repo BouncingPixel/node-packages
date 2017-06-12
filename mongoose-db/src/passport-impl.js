@@ -49,15 +49,19 @@ module.exports = function(User, ssoExtendProfileFn) {
     },
 
     successLogin: function(user, lockout) {
-      if (lockout) {
-        lockout.failedCount = 0;
-        return lockout.save();
+      if (!lockout) {
+        return Promise.resolve();
       }
+
+      lockout.failedCount = 0;
+      return lockout.save();
     },
 
-    failedLogin: function(user, lockout, lockedUntilTime) {
+    failedLogin: function(user, lowerEmail, lockout, lockedUntilTime) {
       if (!lockout) {
-        lockout = new LoginLocker();
+        lockout = new LoginLocker({
+          email: lowerEmail
+        });
       }
 
       if (lockedUntilTime != null) {
