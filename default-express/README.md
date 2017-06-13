@@ -56,15 +56,14 @@ See additional information for:
 
 ### Using default-express
 
-Install `@bouncingpixel/default-express`. Get the app. Configure any extra middleware or routes. Then call `.start()`.
+Install `@bouncingpixel/default-express`. Call `.init()` without a parameter or with one parameter that contains the list of initializers. Initializers may be built-in module specified by the name, such as `cookie-parser` or `error-router`, or can be a function which takes one parameter, the Express app, and may return a Promise for async behavior.
 
 ```js
 const DefaultExpress = require('@bouncingpixel/default-express');
-const app = DefaultExpress.app;
 
-// you can add other routes and middleware here
-
-DefaultExpress.start(app);
+DefaultExpress.init(
+  // you could optionally pass a different list of initializers here
+);
 ```
 
 **NOTE** If you make use of `mongoose-db` and/or `passport-auth`, those package must be initialized before requiring in `default-express`.
