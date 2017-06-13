@@ -1,4 +1,5 @@
 const nconf = require('nconf');
+const winston = require('winston');
 
 const cachedClientConfig = `(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
@@ -14,6 +15,9 @@ const cachedClientConfig = `(function(root, factory) {
   };
 }));`;
 
-module.exports = function(req, res) {
-  res.set('Content-Type', 'application/javascript').send(cachedClientConfig);
+module.exports = function(app) {
+  winston.debug('Creating client side config in /js/config.js');
+  app.get('/js/config.js', function(req, res) {
+    res.set('Content-Type', 'application/javascript').send(cachedClientConfig);
+  });
 };
