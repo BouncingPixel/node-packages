@@ -18,6 +18,8 @@ This module, like many other `@bouncingpixel` modules, relies on nconf.
 The following configuration keys should be defined to use this module:
 
 #### Required
+- `provider:passportAuthImpl`
+  A module that will be used as the `impl` (see schema at bottom for more information)
 - `maxFailTries`
   The maximum number of failed login attempts before locking an account. Defaults to `3`.
 - `maxLockTime`
@@ -57,16 +59,8 @@ For LinkedIn:
 
 ### Using passport-auth
 
-The module exports a factory function. The first time the module is called, a `passport-impl` must be passed.
-See at the bottom for how to implement `passport-impl`.
-All other imports may call the factory to fetch the already initialized copy.
-A parameter can always be passed as the factory is a one-time creation.
-
-Once generated, the module can be initialized with the Express instance to attach the necessary middleware.
-
-```js
-passportAuth.init(app: Express.App)
-```
+The module requires a `passport-auth-impl` to function (see bottom for schema).
+Be sure to set the provider in the nconf key `provider:passportAuthImpl`.
 
 The following middleware are available for use:
 ```js
@@ -131,15 +125,15 @@ type UserId = string;
 
   findUserBySSO(provider: string, id: string): Promise<User?>
 
-  findUserForLogin(lowerEmail: string): Promise<User?>
+  findUserForLogin(lowerCaseEmail: string): Promise<User?>
 
-  findUserForToken(lowerEmail: string): Promise<User?>
+  findUserForToken(lowerCaseEmail: string): Promise<User?>
 
-  findLockoutInfo(lowerEmail: string): Promise<LoginLocker?>
+  findLockoutInfo(lowerCaseEmail: string): Promise<LoginLocker?>
 
   successLogin(user: User, lockout: LoginLocker): Promise
 
-  failedLogin(user: User, lockout: LoginLocker, lockedUntilTimeMillis?: Number): Promise
+  failedLogin(user: User, lowerCaseEmail: string, lockout: LoginLocker): Promise
 
   successTokenLogin(user, lockout): Promise
 
@@ -152,6 +146,9 @@ type UserId = string;
   createUserForSSO(profile: any): User
 
   isUserRoleAtleast(user: User, desiredRole: string): boolean
-
 }
 ```
+
+#### Current impls:
+
+[@bouncingpixel/mongoose-passport-impl](https://github.com/BouncingPixel/node-packages/tree/master/mongoose-passport-impl)

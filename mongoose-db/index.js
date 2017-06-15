@@ -3,28 +3,13 @@ const mongoose = require('mongoose');
 mongoose.Promise = bluebird;
 
 const nconf = require('nconf');
-const fs = require('fs');
-const path = require('path');
 
 module.exports = {
-  init: function(modelsDirectory) {
+  init: function() {
     const mongoConnectString = nconf.get('mongoConnectStr');
 
-    return (mongoose
-      .connect(mongoConnectString, {autoindex: process.env.NODE_ENV !== 'production'})
-      .then(function() {
-        if (modelsDirectory) {
-          const potentialModels =
-            fs
-              .readdirSync(modelsDirectory)
-              .filter(isJsAndNotIndex)
-              .map((model) => model.substring(0, model.length - 3));
-
-          potentialModels.map((modelFile) => {
-            return require(path.join(modelsDirectory, modelFile));
-          });
-        }
-      }));
+    const settings = {autoindex: process.env.NODE_ENV !== 'production'};
+    return mongoose.connect(mongoConnectString, settings);
   },
 
   getSessionStore: function(session) {
@@ -35,11 +20,5 @@ module.exports = {
       ttl: 14 * 24 * 3600,
       touchAfter: 3600
     });
-  },
-
-  passportImplFactory: require('./src/passport-impl')
+  }
 };
-
-function isJsAndNotIndex(file) {
-  return file.substring(file.length - 3) === '.js' && file !== 'index.js';
-}

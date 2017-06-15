@@ -6,7 +6,7 @@ const nconf = require('nconf');
 const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
 const LocalStrategy = require('passport-local').Strategy;
 
-const authImpl = require(nconf.get('PassportAuthImpl'));
+const authImpl = nconf.get('provider:passportAuthImpl');
 
 const PassportService = {
 

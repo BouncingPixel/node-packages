@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/default-express",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "The default express configuration for most projects",
   "main": "index.js",
   "scripts": {
@@ -41,6 +41,8 @@
     "express": "^4.13.4",
     "express-session": "^1.14.2",
     "express-winston": "^2.1.2",
+    "express-zones": "~0.2.0",
+    "forwarded-http":"~0.3.0",
     "nconf": "^0.8.4",
     "winston": "^2.3.0"
   }
