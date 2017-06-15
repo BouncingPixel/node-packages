@@ -1,13 +1,8 @@
 const defaultInitializers = [
-  'extend-nodepath',
-  'load-config',
-  'database-adapter',
+  'database-adapters',
   'view-engine',
-  'trust-proxy',
-  'powered-by',
   'compression',
   'webpack-dev',
-  'webtools-verifier',
   'client-config',
   'public-dir',
   'force-redirects',
@@ -16,16 +11,19 @@ const defaultInitializers = [
   'session',
   'flash',
   'auth-adapter',
-  'set-locals',
   'express-logger',
   'body-parser',
   'security',
+  'set-locals',
   'routes',
   'view-router',
   '404',
   'error-router',
   'server-listen'
 ];
+
+require('./extend-nodepath')();
+require('./load-config')();
 
 module.exports = {
   init: function init(initializers) {
@@ -35,6 +33,11 @@ module.exports = {
     const app = express();
     require('@bouncingpixel/express-async-patch')(app);
 
+    require('express-zones')(app);
+
+    app.set('x-powered-by', false);
+    app.enable('trust proxy');
+
     let current = Promise.resolve();
 
     initList.forEach(function(initializer) {
@@ -43,50 +46,15 @@ module.exports = {
       }
 
       current = current.then(function() {
-        return initializer(app);
+        if (Array.isArray(initializer)) {
+          return Promise.all(initializer);
+        } else {
+          return initializer(app);
+        }
       });
     });
 
     return current;
-  },
-
-  addInitializerBefore: function(list, beforeOther, initializer) {
-    if (list == null) {
-      list = defaultInitializers;
-    }
-    const indexOfOther = list.lastIndexOf(beforeOther);
-
-    if (indexOfOther === -1) {
-      return (Array.isArray(initializer) ? initializer : [initializer]).concat(list);
-    } else {
-      return list.slice(0, indexOfOther).concat(initializer).concat(list.slice(indexOfOther));
-    }
-  },
-
-  addInitializerAfter: function(list, afterOther, initializer) {
-    if (list == null) {
-      list = defaultInitializers;
-    }
-    const indexOfOther = list.lastIndexOf(afterOther) + 1;
-
-    if (indexOfOther === 0 || indexOfOther === list.length) {
-      return list.concat(initializer);
-    } else {
-      return list.slice(0, indexOfOther).concat(initializer).concat(list.slice(indexOfOther));
-    }
-  },
-
-  replaceInitializer: function(list, oldInitializer, newInitializer) {
-    if (list == null) {
-      list = defaultInitializers;
-    }
-    const indexOfOther = list.lastIndexOf(oldInitializer);
-
-    if (indexOfOther === -1) {
-      return list;
-    } else {
-      return list.splice(0, indexOfOther).concat(newInitializer).concat(list.slice(indexOfOther + 1));
-    }
   }
 };
 

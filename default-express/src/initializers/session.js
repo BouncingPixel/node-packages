@@ -5,7 +5,7 @@ const winston = require('winston');
 module.exports = function(app) {
   let databaseAdapter = null;
   try {
-    databaseAdapter = require(nconf.get('bpixDatabaseAdapter'));
+    databaseAdapter = require(nconf.get('provider:sessionDatabase'));
   } catch (_e) {
     databaseAdapter = null;
   }
