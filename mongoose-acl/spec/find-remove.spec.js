@@ -96,11 +96,11 @@ describe('findAndRemove', function() {
     }
   ];
 
-  const tests = options.map(function(testOptions) {
+  let tests = options.map(function(testOptions, indx) {
     const TestSchema = mongoose.Schema(basicSchema);
     const settings = {};
 
-    let testname = ['findremove'];
+    let testname = ['findremove', indx];
 
     if (testOptions.canRead === null) {
       settings.canRead = null;
@@ -132,6 +132,7 @@ describe('findAndRemove', function() {
 
     return {
       schema: TestSchema,
+      expect: testOptions.expect,
       testname: testname.join('_'),
       settings: settings,
       options: testOptions,
@@ -193,14 +194,14 @@ describe('findAndRemove', function() {
   });
 
   tests.forEach(function(test) {
-    const RawModel = test.model;
-
     it(test.testname, function(done) {
+      const RawModel = test.model;
+
       const mockreq = {};
       const SafeModel = RawModel.protect(mockreq);
 
       SafeModel
-        .findAndRemove({_id: savedItemId})
+        .findOneAndRemove({_id: savedItemId})
         .then(function(item) {
           if (test.expect) {
             done();

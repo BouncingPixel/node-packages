@@ -5,7 +5,6 @@ const defaultInitializers = [
   'webpack-dev',
   'client-config',
   'public-dir',
-  'force-redirects',
   'universal-responses',
   'cookie-parser',
   'session',
@@ -13,6 +12,7 @@ const defaultInitializers = [
   'auth-adapter',
   'express-logger',
   'body-parser',
+  'force-redirects',
   'security',
   'set-locals',
   'routes',
@@ -54,7 +54,9 @@ module.exports = {
       });
     });
 
-    return current;
+    return current.then(function() {
+      return app;
+    });
   }
 };
 

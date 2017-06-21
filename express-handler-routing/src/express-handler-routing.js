@@ -1,44 +1,30 @@
 const fs = require('fs');
 const path = require('path');
 
-let express = require('express');
 const logger = require('winston');
 const methods = require('methods');
 
 // this one is used in production
-function createAllRoutes(baseViewsDir) {
-  // create an express router
-  const router = express.Router();
+function createAllRoutes(app) {
+  const baseViewsDir = app.get('routes-dir');
 
-  // go through list of files and add routes for each of them
+  // go through list of files and add routes for each of them. this is done synchronously
   const staticDir = path.join(baseViewsDir);
-  addRoutesInDir(staticDir, '/', router);
-
-  // we return the router, even though this is async and the router is filled later
-  // express is fine with this
-  return router;
+  addRoutesInDir(staticDir, '/', app);
 }
 
 // no callback as it doesn't really matter. we don't notify anything that we are done
-function addRoutesInDir(baseDir, dir, router) {
+function addRoutesInDir(baseDir, dir, app) {
   const fullDir = path.join(baseDir, dir);
 
-  fs.stat(fullDir, function(err, stats) {
-    if (err) {
-      logger.warn(err);
-      return;
-    }
+  try {
+    const stats = fs.statSync(fullDir);
 
     if (stats.isDirectory()) {
-      fs.readdir(fullDir, function(err, files) {
-        if (err) {
-          logger.warn(err);
-          return;
-        }
+      const files = fs.readdirSync(fullDir);
 
-        files.forEach(function(file) {
-          addRoutesInDir(baseDir, path.join(dir, file), router);
-        });
+      files.forEach(function(file) {
+        addRoutesInDir(baseDir, path.join(dir, file), app);
       });
     } else {
       // make sure it ends in .js
@@ -57,21 +43,20 @@ function addRoutesInDir(baseDir, dir, router) {
       const routeMethods = require(fullDir);
 
       if (routeMethods) {
-        if (Object.getPrototypeOf(routeMethods) === express.Router) {
-          logger.debug(`Adding middleware via use to "${parameterizedUrl}"`);
-          router.use(parameterizedUrl, routeMethods);
-        } else {
-          const before = makeSureIsArray(routeMethods.before);
-          const after = makeSureIsArray(routeMethods.after);
+        const before = makeSureIsArray(routeMethods.before);
+        const after = makeSureIsArray(routeMethods.after);
+        const zones = makeSureIsArray(routeMethods.zones);
 
-          addRoutes(router, parameterizedUrl, routeMethods, before, after);
-        }
+        addRoutes(app, parameterizedUrl, routeMethods, before, after, zones);
       }
     }
-  });
+  } catch (e) {
+    logger.warn(e);
+    return;
+  }
 }
 
-function addRoutes(router, baseUrl, routeMethods, parentBefore, parentAfter) {
+function addRoutes(app, baseUrl, routeMethods, parentBefore, parentAfter, parentZones) {
   for (const item in routeMethods) {
     if (methods.indexOf(item) !== -1) {
       // if it is a method, then we mount it to the URL
@@ -96,17 +81,36 @@ function addRoutes(router, baseUrl, routeMethods, parentBefore, parentAfter) {
       }
 
       logger.debug(`Adding route ${method.toUpperCase()} "${baseUrl}"`);
-      router[method].apply(router, routerArgs);
+
+      let mountLocation = app;
+      if (app.zone) {
+        const defaultZone = app.get('router-defaultzone');
+        if (parentZones.length) {
+          mountLocation = app.zone(parentZones.join(' '));
+        } else if (defaultZone) {
+          mountLocation = app.zone(defaultZone);
+        }
+      }
+
+      mountLocation[method].apply(mountLocation, routerArgs);
     } else if (item === 'use') {
-      router.use(baseUrl, routeMethods.use);
+      app.use(baseUrl, routeMethods.use);
     } else if (item.length && item[0] === '/') {
       // if its not a method and it starts with a /, we assume it is a nested set of routes
       const url = baseUrl !== '/' ? (baseUrl + item) : item;
       const before = makeSureIsArray(routeMethods.before);
       const after = makeSureIsArray(routeMethods.after);
+      const zones = makeSureIsArray(routeMethods.zones);
 
-      addRoutes(router, url, routeMethods[item], parentBefore.concat(before), after.concat(parentAfter));
-    } else if (item === 'before' || item === 'after') {
+      addRoutes(
+        app,
+        url,
+        routeMethods[item],
+        parentBefore.concat(before),
+        after.concat(parentAfter),
+        parentZones.concat(zones)
+      );
+    } else if (item === 'before' || item === 'after' || item === 'zone') {
       // we can safely ignore these two
     } else {
       // if its not any of that, we warn the user of an invalid key

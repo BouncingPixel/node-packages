@@ -38,29 +38,32 @@ module.exports = function MongooseAcl(schema, initOptions) {
 
     const accessFn = this.isNew ? canCreate : canUpdate;
 
-    const access = accessFn.call(this.constructor, req, this);
+    Promise
+      .resolve(accessFn.call(this.constructor, req, this))
+      .then((access) => {
+        // false means no access at all (null and undefined also are caught like this too)
+        if (!access) {
+          // TODO: customize the error message
+          next(new HttpErrors.ForbiddenError('Do not have access'));
+          return;
+        }
 
-    // false means no access at all (null and undefined also are caught like this too)
-    if (!access) {
-      // TODO: customize the error message
-      next(new HttpErrors.ForbiddenError('Do not have access'));
-      return;
-    }
+        // true means full access
+        if (access === true) {
+          next();
+          return;
+        }
 
-    // true means full access
-    if (access === true) {
-      next();
-      return;
-    }
+        // otherwise, we need to check the paths
+        if (validateAllowedPaths(this.constructor, this, access)) {
+          // TODO: customize the error message
+          next(new HttpErrors.ForbiddenError('Do not have access'));
+          return;
+        }
 
-    // otherwise, we need to check the paths
-    if (validateAllowedPaths(this.constructor, this, access)) {
-      // TODO: customize the error message
-      next(new HttpErrors.ForbiddenError('Do not have access'));
-      return;
-    }
-
-    next();
+        next();
+      })
+      .catch(next);
   });
 
   schema.pre('remove', function(next) {
@@ -76,17 +79,20 @@ module.exports = function MongooseAcl(schema, initOptions) {
 
     const req = this.constructor.$req;
 
-    const access = canDelete.call(this.constructor, req, this);
+    Promise
+      .resolve(canDelete.call(this.constructor, req, this))
+      .then((access) => {
+        // false means no access at all (null and undefined also are caught like this too)
+        if (!access) {
+          // TODO: customize the error message
+          next(new HttpErrors.ForbiddenError('Do not have access'));
+          return;
+        }
 
-    // false means no access at all (null and undefined also are caught like this too)
-    if (!access) {
-      // TODO: customize the error message
-      next(new HttpErrors.ForbiddenError('Do not have access'));
-      return;
-    }
-
-    // since it is either true or false, then it must be true, so we allow the delete
-    next();
+        // since it is either true or false, then it must be true, so we allow the delete
+        next();
+      })
+      .catch(next);
   });
 
   // query hooks just manipulate the queries
@@ -104,21 +110,24 @@ module.exports = function MongooseAcl(schema, initOptions) {
 
     const req = this.model.$req;
 
-    const access = canRead.call(this.model, req, this.getQuery());
+    Promise
+      .resolve(canRead.call(this.model, req, this.getQuery()))
+      .then((access) => {
+        // false means no access at all (null and undefined also are caught like this too)
+        if (!access) {
+          // TODO: customize the error message
+          next(new HttpErrors.ForbiddenError('Do not have access'));
+          return;
+        }
 
-    // false means no access at all (null and undefined also are caught like this too)
-    if (!access) {
-      // TODO: customize the error message
-      next(new HttpErrors.ForbiddenError('Do not have access'));
-      return;
-    }
+        // we expose the query for custom where or limits
+        if (access.query) {
+          access.query(this);
+        }
 
-    // we expose the query for custom where or limits
-    if (access.query) {
-      access.query(this);
-    }
-
-    next();
+        next();
+      })
+      .catch(next);
   });
   function findMiddleware(next) {
     if (this.model.$unsafeAcl) {
@@ -133,37 +142,40 @@ module.exports = function MongooseAcl(schema, initOptions) {
 
     const req = this.model.$req;
 
-    const access = canRead.call(this.model, req, this.getQuery());
+    Promise
+      .resolve(canRead.call(this.model, req, this.getQuery()))
+      .then((access) => {
+        // false means no access at all (null and undefined also are caught like this too)
+        if (!access) {
+          // TODO: customize the error message
+          next(new HttpErrors.ForbiddenError('Do not have access'));
+          return;
+        }
 
-    // false means no access at all (null and undefined also are caught like this too)
-    if (!access) {
-      // TODO: customize the error message
-      next(new HttpErrors.ForbiddenError('Do not have access'));
-      return;
-    }
+        if (access === true) {
+          next();
+          return;
+        }
 
-    if (access === true) {
-      next();
-      return;
-    }
+        const allowedPaths = getAllowedPaths(this.model, access) || [];
 
-    const allowedPaths = getAllowedPaths(this.model, access);
+        // we expose the query for custom where or limits
+        if (access.query) {
+          access.query(this);
+        }
 
-    // we expose the query for custom where or limits
-    if (access.query) {
-      access.query(this);
-    }
+        if (allowedPaths.length) {
+          const select = {};
+          allowedPaths.forEach(path => select[path] = 1);
 
-    if (allowedPaths.length) {
-      const select = {};
-      allowedPaths.forEach(path => select[path] = 1);
+          this.select(select);
+        } else {
+          this.select({_id: 1});
+        }
 
-      this.select(select);
-    } else {
-      this.select({_id: 1});
-    }
-
-    next();
+        next();
+      })
+      .catch(next);
   }
   schema.pre('find', findMiddleware);
   schema.pre('findOne', findMiddleware);
@@ -179,8 +191,8 @@ module.exports = function MongooseAcl(schema, initOptions) {
       // don't want a second query (cause you are using findOneAndUpdate)? then use the unprotected model.
       _this.model.findOne(_this.getQuery()).then(function(item) {
         // then validate the update
-        const access = canDelete.call(_this.model, req, item);
-
+        return canDelete.call(_this.model, req, item);
+      }).then((access) => {
         // can remove is simply a true/false thing
         if (!access) {
           // TODO: customize the error message
@@ -205,8 +217,8 @@ module.exports = function MongooseAcl(schema, initOptions) {
       // don't want a second query (cause you are using findOneAndUpdate)? then use the unprotected model.
       _this.model.findOne(_this.getQuery()).then(function(item) {
         // then validate the update
-        const access = canUpdate.call(_this.model, req, item);
-
+        return canUpdate.call(_this.model, req, item);
+      }).then((access) => {
         // false means no access at all (null and undefined also are caught like this too)
         if (!access) {
           // TODO: customize the error message
@@ -248,8 +260,8 @@ module.exports = function MongooseAcl(schema, initOptions) {
     const _this = this;
 
     _this.model.findOne(_this.getQuery()).then(function(item) {
-      const access = canUpdate.call(_this.model, req, item);
-
+      return canUpdate.call(_this.model, req, item);
+    }).then((access) => {
       // false means no access at all (null and undefined also are caught like this too)
       if (!access) {
         // TODO: customize the error message
@@ -610,15 +622,13 @@ function validateAllowedPaths(model, doc, access) {
     '$currentDate'
   ];
 
-  if (fields.some(field => doc[field])) {
-    // then we check them all
-    return fields.some(field => {
-      const data = doc[field];
-      if (!data) {
-        return false;
-      }
+  const hasFields = fields.filter(field => doc[field] != null);
 
-      return allPaths.some(path => data.hasOwnProperty(path) && allowedPaths.indexOf(path) === -1);
+  if (hasFields.length) {
+    // then we check them all
+    return hasFields.some(field => {
+      const data = doc[field];
+      return !data || allPaths.some(path => data.hasOwnProperty(path) && allowedPaths.indexOf(path) === -1);
     });
   }
 

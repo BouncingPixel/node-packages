@@ -58,7 +58,6 @@ MySchema.plugin(require('../utils/schemas/algolia-methods'), {
   autoSave: true, // boolean if the auto-save post-save hook should be enabled
   includeObjectInIndex: fn, // a function to determine if a particular object should be included in Algolia
   castToObject: fn, // a function to convert an object into the exact data format to be stored in Algolia
-  indexName: str, // the name of the index. with the prefixing system, this is just the 2nd half of the Algolia index name
   errorsOnNotFound: false, // boolean if the function findOneUpdateAndSync does not find an object to update
   updateIfAnyField: null, // an array of fields that when changed, will cause an automatic sync to Algolia
                           // the default null will assume any change should be sync'd to Algolia

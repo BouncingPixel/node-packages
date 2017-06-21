@@ -12,6 +12,16 @@ const client = (nconf.get('client:algoliaAppId') && nconf.get('algoliaApiKey')) 
   algoliasearch(nconf.get('client:algoliaAppId'), nconf.get('algoliaApiKey')) :
   null;
 
+const indecies = {};
+
+function getIndex(modelName) {
+  if (!indecies[modelName]) {
+    indecies[modelName] = client.initIndex(algoliaIndexPrefix + '_' + modelName);
+  }
+
+  return indecies[modelName];
+}
+
 function defaultIncludeInIndex(obj) {
   return obj ? true : null;
 }
@@ -30,9 +40,6 @@ module.exports = function AutoAlgolia(schema, initOptions) {
   if (!initOptions) {
     throw new Error('Init options are required');
   }
-  if (!initOptions.indexName) {
-    throw new Error('indexName is required in the Init options');
-  }
   if (!client) {
     throw new Error('Cannot add Algolia methods without proper configuration');
   }
@@ -42,10 +49,8 @@ module.exports = function AutoAlgolia(schema, initOptions) {
   const includeObjectInIndex = initOptions.includeObjectInIndex || defaultIncludeInIndex;
   const castToObject = initOptions.castToObject || defaultCastToObject;
 
-  const index = client.initIndex(algoliaIndexPrefix + '_' + initOptions.indexName);
-
   const algoliaFunctions = {
-    remove: function(obj, done) {
+    remove: function(index, obj, done) {
       if (!obj) {
         done();
         return;
@@ -61,7 +66,7 @@ module.exports = function AutoAlgolia(schema, initOptions) {
       });
     },
 
-    update: function(obj, done) {
+    update: function(index, obj, done) {
       if (!includeObjectInIndex(obj)) {
         done();
         return;
@@ -83,11 +88,11 @@ module.exports = function AutoAlgolia(schema, initOptions) {
   const updateFieldsCount = updateIfAnyField ? updateIfAnyField.length : 0;
   const removeFieldsCount = removeIfFieldSet ? removeIfFieldSet.length : 0;
 
-  function determineAndPerform(item, shouldRemove, shouldUpdate, next) {
+  function determineAndPerform(index, item, shouldRemove, shouldUpdate, next) {
     if (shouldRemove) {
-      return algoliaFunctions.remove(item, next);
+      return algoliaFunctions.remove(index, item, next);
     } else if (shouldUpdate) {
-      return algoliaFunctions.update(item, next);
+      return algoliaFunctions.update(index, item, next);
     }
   }
 
@@ -98,6 +103,7 @@ module.exports = function AutoAlgolia(schema, initOptions) {
       options = {new: true};
     }
 
+    const index = getIndex(this.modelName);
     let shouldRemove = false;
     let shouldUpdate = !updateIfAnyField;
 
@@ -142,7 +148,7 @@ module.exports = function AutoAlgolia(schema, initOptions) {
       }
 
       if (item) {
-        return determineAndPerform(item, shouldRemove, shouldUpdate, function() {
+        return determineAndPerform(index, item, shouldRemove, shouldUpdate, function() {
           done(null, item);
         });
       } else if (errorsOnNotFound) {
@@ -157,6 +163,7 @@ module.exports = function AutoAlgolia(schema, initOptions) {
     // hooks to handle auto-updating Algolia
     schema.pre('save', function(next) {
       const item = this;
+      const index = getIndex(this.this.constructor.modelName);
 
       let shouldRemove = false;
       let shouldUpdate = !updateIfAnyField;
@@ -180,12 +187,13 @@ module.exports = function AutoAlgolia(schema, initOptions) {
         }
       }
 
-      determineAndPerform(item, shouldRemove, shouldUpdate, next);
+      determineAndPerform(index, item, shouldRemove, shouldUpdate, next);
     });
 
     schema.pre('remove', function(next) {
       const item = this;
-      algoliaFunctions.remove(item, next);
+      const index = getIndex(this.this.constructor.modelName);
+      algoliaFunctions.remove(index, item, next);
     });
   }
 
@@ -232,10 +240,12 @@ module.exports = function AutoAlgolia(schema, initOptions) {
   };
 
   schema.statics.findInAlgolia = function() {
+    const index = getIndex(this.modelName);
     return index.apply(index, arguments);
   };
 
   schema.statics.clearAlgoliaIndex = function() {
+    const index = getIndex(this.modelName);
     return index.clearIndex();
   };
 };

@@ -5,14 +5,13 @@ const routerFactory = rewire('../src/express-handler-routing');
 
 describe('express-handler-routing route generation', function() {
 
-  let mockExpressRouter;
-  let mockExpress;
+  let mockExpressFns;
 
   let middleware = {};
   let routes = {};
 
   beforeAll(function() {
-    mockExpressRouter = {
+    mockExpressFns = {
       use: jasmine.createSpy('mockUse').and.callFake(function(p1, p2) {
         if (!p2 || p1 instanceof Function) {
           middleware['/'] = (middleware['/'] || 0) + arguments.length;
@@ -21,34 +20,32 @@ describe('express-handler-routing route generation', function() {
         }
       }),
 
-      get: jasmine.createSpy('mockGet').and.callFake(function(p1) {
-        routes[p1] = (routes[p1] || 0) + 1;
+      get: jasmine.createSpy('mockGet').and.callFake(function(p1, p2) {
+        if (!p2) {
+          if (p1 === 'routes-dir') {
+            return path.resolve(__dirname, 'routes');
+          } else {
+            return undefined;
+          }
+        } else {
+          routes[p1] = (routes[p1] || 0) + 1;
+        }
       }),
 
       post: jasmine.createSpy('mockPost').and.callFake(function(p1) {
         routes[p1] = (routes[p1] || 0) + 1;
       })
     };
-
-    mockExpress = {
-      Router: function() {
-        return mockExpressRouter;
-      }
-    };
-
-    routerFactory.__set__('express', mockExpress);
   });
 
   afterEach(function() {
-    mockExpressRouter.use.calls.reset();
-    mockExpressRouter.get.calls.reset();
-    mockExpressRouter.post.calls.reset();
+    mockExpressFns.use.calls.reset();
+    mockExpressFns.get.calls.reset();
+    mockExpressFns.post.calls.reset();
   });
 
   it('should generate proper routes', function(done) {
-    const returnedRouter = routerFactory(path.resolve(__dirname, 'routes'));
-
-    expect(returnedRouter).toBe(mockExpressRouter);
+    routerFactory(mockExpressFns);
 
     setTimeout(function() {
       const routePaths = Object.keys(routes);
