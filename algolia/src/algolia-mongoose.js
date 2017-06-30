@@ -163,7 +163,7 @@ module.exports = function AutoAlgolia(schema, initOptions) {
     // hooks to handle auto-updating Algolia
     schema.pre('save', function(next) {
       const item = this;
-      const index = getIndex(this.this.constructor.modelName);
+      const index = getIndex(this.constructor.modelName);
 
       let shouldRemove = false;
       let shouldUpdate = !updateIfAnyField;
@@ -192,7 +192,7 @@ module.exports = function AutoAlgolia(schema, initOptions) {
 
     schema.pre('remove', function(next) {
       const item = this;
-      const index = getIndex(this.this.constructor.modelName);
+      const index = getIndex(this.constructor.modelName);
       algoliaFunctions.remove(index, item, next);
     });
   }

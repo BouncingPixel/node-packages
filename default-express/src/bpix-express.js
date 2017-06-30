@@ -31,7 +31,7 @@ module.exports = {
 
     const express = require('express');
     const app = express();
-    require('@bouncingpixel/express-async-patch')(app);
+    require('express-async-patch')(app);
 
     require('express-zones')(app);
 

@@ -80,7 +80,7 @@ function addRoutes(app, baseUrl, routeMethods, parentBefore, parentAfter, parent
         logger.warn(`A route, "${baseUrl}", may not be performing any action due to missing handler, before, and/or after`);
       }
 
-      logger.debug(`Adding route ${method.toUpperCase()} "${baseUrl}"`);
+      logger.silly(`Adding route ${method.toUpperCase()} "${baseUrl}"`);
 
       let mountLocation = app;
       if (app.zone) {
