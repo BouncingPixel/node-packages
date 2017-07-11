@@ -45,7 +45,7 @@ function addRoutesInDir(baseDir, dir, app) {
       if (routeMethods) {
         const before = makeSureIsArray(routeMethods.before);
         const after = makeSureIsArray(routeMethods.after);
-        const zones = makeSureIsArray(routeMethods.zones);
+        const zones = makeSureIsArray(routeMethods.zone);
 
         addRoutes(app, parameterizedUrl, routeMethods, before, after, zones);
       }
@@ -68,6 +68,7 @@ function addRoutes(app, baseUrl, routeMethods, parentBefore, parentAfter, parent
       // defaulting to empty array as a way to exclude from .concat
       const handler = (routeInfo instanceof Function ? routeInfo : routeInfo.handler) || [];
       const after = makeSureIsArray(routeInfo.after);
+      const zones = parentZones.concat(makeSureIsArray(routeInfo.zone));
 
       const routerArgs = [baseUrl]
         .concat(parentBefore)
@@ -85,8 +86,9 @@ function addRoutes(app, baseUrl, routeMethods, parentBefore, parentAfter, parent
       let mountLocation = app;
       if (app.zone) {
         const defaultZone = app.get('router-defaultzone');
-        if (parentZones.length) {
-          mountLocation = app.zone(parentZones.join(' '));
+
+        if (zones.length) {
+          mountLocation = app.zone(zones.join(' '));
         } else if (defaultZone) {
           mountLocation = app.zone(defaultZone);
         }
@@ -100,7 +102,7 @@ function addRoutes(app, baseUrl, routeMethods, parentBefore, parentAfter, parent
       const url = baseUrl !== '/' ? (baseUrl + item) : item;
       const before = makeSureIsArray(routeMethods.before);
       const after = makeSureIsArray(routeMethods.after);
-      const zones = makeSureIsArray(routeMethods.zones);
+      const zones = makeSureIsArray(routeMethods.zone);
 
       addRoutes(
         app,
