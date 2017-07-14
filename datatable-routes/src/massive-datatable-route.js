@@ -1,11 +1,13 @@
 'use strict';
 
-module.exports = function(Model, options) {
+module.exports = function(tableName, options) {
   if (!options) {
     options = {};
   }
 
   return function(req, res) {
+    const db = req.app.get('db');
+
     let selectAll = false;
 
     let extraCols = req.query.extraColumns || [];
@@ -16,14 +18,10 @@ module.exports = function(Model, options) {
         extraCols = extraCols.concat(options.extraCols);
       }
     }
-    extraCols = extraCols.map(c => {
-      return {data: c};
-    });
 
-    const selects = extraCols.concat(req.query.columns).reduce((c, col) => {
-      c[col.data] = 1;
-      return c;
-    }, {});
+    // why does this end up becoming one col of data? so weird
+    const columns = req.query.columns.map(col => col.data).filter(c => !!c.length);
+    const selects = columns.concat(extraCols.filter(c => columns.indexOf(c) === -1));
 
     const query = {};
     const baseQuery = {};
@@ -36,14 +34,18 @@ module.exports = function(Model, options) {
 
     req.query.columns.forEach((col) => {
       if (col.search.value && col.search.value.length) {
-        query[col.data] = new RegExp(col.search.value, 'i');
+        if (col.search.regex && col.search.regex.toString() === 'true') {
+          query[`${col.data}::TEXT SIMILAR TO`] = `%${col.search.value}%`;
+        } else {
+          query[`${col.data}::TEXT ILIKE`] = `%${col.search.value}%`;
+        }
       }
     });
 
     const extraFilter = req.query.extraFilter;
     if (options.allowExtraFilter && extraFilter) {
       for (let k in extraFilter) {
-        // since this is passthrough, mongo query operators are available
+        // since this is passthrough, massive query operators are available
         query[k] = extraFilter[k];
       }
     }
@@ -53,23 +55,29 @@ module.exports = function(Model, options) {
       }
     }
 
-    const sorter = req.query.order.reduce((s, orderInfo) => {
-      const col = req.query.columns[orderInfo.column];
-      s[col.data] = orderInfo.dir.toLowerCase() === 'asc' ? 1 : -1;
-      return s;
-    }, {});
+    const sorter = req.query.order.map((orderInfo) => {
+      const col = req.query.columns[orderInfo.column].data;
+      const dir = orderInfo.dir.toLowerCase() === 'desc' ? ' DESC' : '';
+      return [col, dir].join('');
+    }).join(', ');
 
     const start = parseInt(req.query.start, 10) || 0;
     const length = parseInt(req.query.length, 10);
 
-    const totalPromise = Model.count(baseQuery);
-    const filteredTotal = Model.count(query);
+    const findOptions = {
+      limit: length,
+      offset: start,
+      order: sorter
+    };
 
-    let filtered = Model.find(query);
     if (!selectAll) {
-      filtered = filtered.select(selects);
+      findOptions.columns = selects;
     }
-    filtered = filtered.sort(sorter).skip(start).limit(length).lean();
+
+    const table = db[tableName];
+    const totalPromise = table.count(baseQuery);
+    const filteredTotal = table.count(query);
+    const filtered = table.find(query, findOptions);
 
     Promise.all([totalPromise, filteredTotal, filtered]).then((results) => {
       const foundRecords = results[2];
