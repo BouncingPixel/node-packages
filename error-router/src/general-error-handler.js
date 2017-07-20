@@ -29,11 +29,34 @@ module.exports = function makeErrorHandler(inoptions) {
 
   return function generalErrorHandler(err, req, res, _next) {
     const statusCode = err.status || 500;
-    res.status(statusCode);
+    const defaultMessage = http.STATUS_CODES[statusCode] || http.STATUS_CODES[500];
 
+    const logMessage = _determineLogMessage(err, defaultMessage);
+
+    // log everything as a warning that is not a 401, 403, or 404 error
+    if ([401, 403, 404].indexOf(statusCode) === -1) {
+      logger.warn(logMessage);
+      logger.warn(err);
+    } else if (statusCode !== 404) {
+      // debug out the 401 and 403's just in case
+      logger.debug(logMessage);
+      logger.debug(err);
+    } else {
+      // 404s are really just silly in reality, but here just in case
+      logger.silly(logMessage);
+      logger.silly(err);
+    }
+
+    // if headers are sent, only thing we can do is just destroy the socket
+    if (res._header) {
+      req.socket.destroy();
+      return;
+    }
+
+    // 401 is special, might be just a redirect or something
     if (statusCode === 401) {
       if (req.xhr || req.wantsJSON) {
-        return res.send(options.response401Json);
+        return res.status(401).send(options.response401Json);
       }
 
       if (options.sessionRedirectVar) {
@@ -43,33 +66,12 @@ module.exports = function makeErrorHandler(inoptions) {
       return res.redirect(options.redirectOn401);
     }
 
-    const defaultMessage = http.STATUS_CODES[statusCode] || http.STATUS_CODES[500];
-
-    // check if the view file exists and use that
-    // if not, check if view.substring(0, end-2) + 'xx' exists and use that
-    // if not, then check if error/error.dust exists and use that
-    // if not, then just send the message
-
-    const logMessage = _determineLogMessage(err, defaultMessage);
-
-    // log everything that is not a 401, 403, or 404 error
-    if ([401, 403, 404].indexOf(statusCode) === -1) {
-      logger.warn(logMessage);
-      logger.warn(err);
-    } else if (statusCode !== 404) {
-      // info the non-404s just in case
-      logger.debug(logMessage);
-      logger.debug(err);
-    } else {
-      // 404s are really just silly in reality, but here just in case
-      logger.silly(logMessage);
-      logger.silly(err);
-    }
-
+    // for XHR, just send the log message down
     if (req.xhr || req.wantsJSON) {
-      return res.send(logMessage);
+      return res.status(statusCode).send(logMessage);
     }
 
+    // for POST (non-xhr), we generally just redirect back or to some page
     if (req.method.toLowerCase() === 'post') {
       if (options.enableFlash) {
         req.flash('error', logMessage);
@@ -77,9 +79,13 @@ module.exports = function makeErrorHandler(inoptions) {
 
       let redirectTo = err.redirectTo || req.errorRedirectTo || 'back';
       res.redirect(redirectTo);
-
       return;
     }
+
+    // check if the view file exists and use that
+    // if not, check if view.substring(0, end-2) + 'xx' exists and use that
+    // if not, then check if error/error.dust exists and use that
+    // if not, then just send the message
 
     // take the URL, ignoring the first slash
     // split it into parts
@@ -115,12 +121,14 @@ module.exports = function makeErrorHandler(inoptions) {
     const viewsExt = req.app.get('view engine');
 
     findExistingErrorPage(viewsDirPath, viewsExt, possibleViews, function(_err, view) {
+      // unable to find a view? just write the error message to the user
       if (!view) {
-        res.send(logMessage);
+        res.status(statusCode).send(logMessage);
         return;
       }
 
-      res.render(view, {
+      // render the found view
+      res.status(statusCode).render(view, {
         status: statusCode,
         defaultMessage: defaultMessage,
         message: logMessage,
