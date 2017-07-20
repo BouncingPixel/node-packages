@@ -1,0 +1,26 @@
+{
+  "name": "@bouncingpixel/config-loader",
+  "version": "0.1.0",
+  "description": "A config file loader using nconf",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/config-loader"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "dependencies": {
+    "nconf": "^0.8.4",
+    "winston": "^2.3.0"
+  }
+}
