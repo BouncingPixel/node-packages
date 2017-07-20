@@ -241,7 +241,7 @@ module.exports = function AutoAlgolia(schema, initOptions) {
 
   schema.statics.findInAlgolia = function() {
     const index = getIndex(this.modelName);
-    return index.apply(index, arguments);
+    return index.search.apply(index, arguments);
   };
 
   schema.statics.clearAlgoliaIndex = function() {

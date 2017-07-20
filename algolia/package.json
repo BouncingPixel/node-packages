@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/algolia",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Helpers for algolia, namely a Mongoose model plugin",
   "main": "index.js",
   "scripts": {
