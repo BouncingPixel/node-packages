@@ -200,9 +200,10 @@ module.exports = function AutoAlgolia(schema, initOptions) {
   // instance members to save or remove an object from Algolia
   schema.methods.saveToAlgolia = function() {
     const _this = this;
+    const index = getIndex(_this.constructor.modelName);
 
     return new Promise((resolve, reject) => {
-      algoliaFunctions.update(_this, function(err) {
+      algoliaFunctions.update(index, _this, function(err) {
         if (err) {
           reject(err);
         } else {
@@ -214,9 +215,10 @@ module.exports = function AutoAlgolia(schema, initOptions) {
 
   schema.methods.removeFromAlgolia = function() {
     const _this = this;
+    const index = getIndex(_this.constructor.modelName);
 
     return new Promise((resolve, reject) => {
-      algoliaFunctions.remove(_this, function(err) {
+      algoliaFunctions.remove(index, _this, function(err) {
         if (err) {
           reject(err);
         } else {
@@ -228,8 +230,10 @@ module.exports = function AutoAlgolia(schema, initOptions) {
 
   // static functions to search or remove an object from Algolia
   schema.statics.removeIdFromAlgolia = function(id) {
+    const index = getIndex(this.constructor.modelName);
+
     return new Promise((resolve, reject) => {
-      algoliaFunctions.remove({id: id}, function(err) {
+      algoliaFunctions.remove(index, {id: id}, function(err) {
         if (err) {
           reject(err);
         } else {
