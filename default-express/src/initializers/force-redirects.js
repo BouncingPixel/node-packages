@@ -24,6 +24,8 @@ module.exports = function(app) {
       if (req.method.toLowerCase() !== 'get') {
         // OWASP recommendation was drop the request, so that's what we do
         // ideally, HSTS should prevent it, but this is the fallback
+        // but still destroy the socket to not leave it hanging around
+        req.socket.destroy();
         return;
       }
 

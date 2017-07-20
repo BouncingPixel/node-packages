@@ -22,8 +22,10 @@ const defaultInitializers = [
   'server-listen'
 ];
 
+const path = require('path');
+
 require('./extend-nodepath')();
-require('./load-config')();
+require('@bouncingpixel/config-loader')(path.resolve(process.cwd(), 'config'));
 
 module.exports = {
   init: function init(initializers) {
