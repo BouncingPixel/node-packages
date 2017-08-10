@@ -1,0 +1,32 @@
+{
+  "name": "@bouncingpixel/massive-passport-impl",
+  "version": "0.0.1",
+  "description": "An implementation for the passport-auth package with massive (postgres) as the data store",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/massive-passport-impl"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": "6.x"
+  },
+  "dependencies": {
+  },
+  "peerDependencies": {
+    "@bouncingpixel/massive-pg-db": "~0.0.1",
+    "massive": "^3.0.0",
+    "nconf": "^0.8.4"
+  }
+}
