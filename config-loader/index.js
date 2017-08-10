@@ -4,7 +4,7 @@ const path = require('path');
 const winston = require('winston');
 
 module.exports = function configLoader(configPath) {
-  nconf.argv().env();
+  nconf.argv().env('__');
 
   try {
     const configFiles = fs.readdirSync(configPath);

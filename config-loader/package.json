@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/config-loader",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A config file loader using nconf",
   "main": "index.js",
   "scripts": {
