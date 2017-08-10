@@ -7,6 +7,7 @@ module.exports = function(app) {
     winstonInstance: winston,
     statusLevels: true,
     expressFormat: true,
+    meta: false,
     msg: '{{req.method}} {{req.url}} {{res.statusCode}} {{res.responseTime}}ms '
   }));
 };
