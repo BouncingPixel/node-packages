@@ -8,17 +8,30 @@ function initWebpackDev(app) {
 
   try {
     const webpack = require('webpack');
+    const webpackDevMiddleware = require('webpack-dev-middleware');
+
     const webpackconfig = require(webpackConfigPath);
-    const webpackcompiler = webpack(webpackconfig);
 
-    const devMiddlewareInst = require('webpack-dev-middleware')(webpackcompiler, {
-      publicPath: webpackconfig.output.publicPath
-    });
-
-    app.use(devMiddlewareInst);
+    if (Array.isArray(webpackconfig)) {
+      webpackconfig.forEach(function(config) {
+        makeMiddleware(app, webpack, webpackDevMiddleware, config);
+      });
+    } else {
+      makeMiddleware(app, webpack, webpackDevMiddleware, webpackconfig);
+    }
   } catch (_e) {
     // do nothing, it's not a disaster if it doesnt work
   }
+}
+
+function makeMiddleware(app, webpack, webpackDevMiddleware, config) {
+  const webpackcompiler = webpack(config);
+
+  const devMiddlewareInst = webpackDevMiddleware(webpackcompiler, {
+    publicPath: config.output.publicPath
+  });
+
+  app.use(devMiddlewareInst);
 }
 
 function doNothing() {
