@@ -1,4 +1,4 @@
-const states = {
+var states = {
   AL: 'Alabama',
   AK: 'Alaska',
   AZ: 'Arizona',
@@ -56,7 +56,7 @@ var stateToAbbr = null;
 
 module.exports = function(dust) {
   dust.helpers.stateSelector = function(chunk, context, bodies, params) {
-    const selectedState = params.selectedState || '';
+    var selectedState = params.selectedState || '';
 
     chunk.write('<select ');
     if (params.selectID) {

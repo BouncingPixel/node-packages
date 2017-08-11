@@ -1,22 +1,22 @@
-const pluralize = require('pluralize');
+var pluralize = require('pluralize');
 
 module.exports = function(dust) {
   dust.helpers.pageDescription = function(chunk, context, bodies, params) {
-    const desc = params.desc;
-    const fallback = params.fallback;
+    var desc = params.desc;
+    var fallback = params.fallback;
 
-    let value = desc;
+    var value = desc;
     if (!value || !value.length) {
       value = fallback;
     }
 
     if (value && typeof value === 'string') {
-      const valueLength = value.length;
+      var valueLength = value.length;
 
-      const length = parseInt(params.length, 10) || 155;
-      const addElipsis = params.addElipsis || false;
+      var length = parseInt(params.length, 10) || 155;
+      var addElipsis = params.addElipsis || false;
 
-      let pageDescription = value.substr(0, length);
+      var pageDescription = value.substr(0, length);
       pageDescription = pageDescription.replace(/<\/?[a-z]+>/, '');
 
       chunk.write(pageDescription);
@@ -32,14 +32,14 @@ module.exports = function(dust) {
   };
 
   dust.helpers.substr = function(chunk, context, bodies, params) {
-    const value = params.value;
+    var value = params.value;
 
     if (value && typeof value === 'string') {
-      const valueLength = value.length;
+      var valueLength = value.length;
 
-      const start = parseInt(params.start, 10) || 0;
-      const length = parseInt(params.length, 10);
-      const addElipsis = params.addElipsis || false;
+      var start = parseInt(params.start, 10) || 0;
+      var length = parseInt(params.length, 10);
+      var addElipsis = params.addElipsis || false;
 
       if (addElipsis && start > 0) {
         chunk.write('...');
@@ -56,10 +56,10 @@ module.exports = function(dust) {
   };
 
   dust.helpers.wordlimit = function(chunk, context, bodies, params) {
-    const value = params.value;
-    const limit = parseInt(params.limit, 10);
+    var value = params.value;
+    var limit = parseInt(params.limit, 10);
     if (typeof value === 'string') {
-      const splitString = value.split(' ');
+      var splitString = value.split(' ');
       if (splitString.length <= limit) {
         return value;
       } else {
@@ -71,8 +71,8 @@ module.exports = function(dust) {
 
   //replaces \n char with <br> tag
   dust.helpers.nlToBr = function(chunk, context, bodies, params) {
-    const shouldescape = (params.escape !== 'false');
-    let value = shouldescape ? dust.filters.h(params.content) : params.content;
+    var shouldescape = (params.escape !== 'false');
+    var value = shouldescape ? dust.filters.h(params.content) : params.content;
     if (typeof value === 'string') {
       value = value.replace(/\n/g, '<br>');
     }
@@ -81,13 +81,13 @@ module.exports = function(dust) {
   };
 
   dust.helpers.expandableLessContent = function(chunk, context, bodies, params) {
-    const shouldescape = (params.escape !== 'false');
-    const maxLength = params.maxLength || 250;
-    let value = shouldescape ? dust.filters.h(params.content) : params.content;
+    var shouldescape = (params.escape !== 'false');
+    var maxLength = params.maxLength || 250;
+    var value = shouldescape ? dust.filters.h(params.content) : params.content;
 
     if (typeof value === 'string') {
       if (value.length > maxLength) {
-        const smallBody = value.substr(0, value.lastIndexOf(' ', maxLength));
+        var smallBody = value.substr(0, value.lastIndexOf(' ', maxLength));
         value = '<span class="lesscontent">' + smallBody + '... <a href="#" class="expandcontentlink">(more)</a></span>'
           + '<span class="morecontent hidden">' + value + ' <a href="#" class="shrinkcontentlink">(less)</a></span>';
       }
@@ -99,7 +99,7 @@ module.exports = function(dust) {
   };
 
   dust.helpers.commaSep = function(chunk, context, bodies, params) {
-    let value = parseInt(params.value, 10).toString();
+    var value = parseInt(params.value, 10).toString();
 
     value = value.split('').reverse().join('');
     value = value.replace(/.{3}(?!$)/g, function(match) {
@@ -111,10 +111,10 @@ module.exports = function(dust) {
   };
 
   dust.helpers.pluralize = function(chunk, context, bodies, params) {
-    const value = params.value;
-    let count = parseInt(params.count, 10) || 0;
+    var value = params.value;
+    var count = parseInt(params.count, 10) || 0;
 
-    const sub = params.sub;
+    var sub = params.sub;
     if (sub) {
       count = count - parseInt(sub, 10);
     }

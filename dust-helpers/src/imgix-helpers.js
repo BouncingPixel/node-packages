@@ -5,36 +5,36 @@ module.exports = function(dust) {
   // sizes - a JSON-string encoded array of sizes info, where each item is an array. index 0: screen width, 1: img width, 2: img height.
   // defaultImage - optional default to use if the image above fails to load
   dust.helpers.imgix = function(chunk, context, bodies, params) {
-    const image = params.image;
-    const cropInfo = params.cropInfo;
-    const defaultFit = params.fit || 'crop';
+    var image = params.image;
+    var cropInfo = params.cropInfo;
+    var defaultFit = params.fit || 'crop';
 
-    const cropRect = (image && cropInfo) ?
+    var cropRect = (image && cropInfo) ?
       ('rect=' + [cropInfo.x, cropInfo.y, cropInfo.w, cropInfo.h].join(',')) :
       null;
 
-    const imgixUrl = context.get('ENV.imgixUrl');
+    var imgixUrl = context.get('ENV.imgixUrl');
 
-    const sizes = (params.sizes && params.sizes.length)
-      ? JSON.parse(params.sizes) :
-      [];
-    const defaultImage = params.defaultImage || context.get('imgixDefaultImage') || '';
-    const className = params.className || 'image';
+    var sizes = (params.sizes && params.sizes.length)
+    ? JSON.parse(params.sizes) :
+    [];
+    var defaultImage = params.defaultImage || context.get('imgixDefaultImage') || '';
+    var className = params.className || 'image';
 
-    let imageUrlParams = [];
+    var imageUrlParams = [];
 
     if (cropRect) {
       imageUrlParams.push(cropRect);
       imageUrlParams.push('fit=crop');
     }
 
-    const imagePath = image ? (imgixUrl + image + '?') : defaultImage;
+    var imagePath = image ? (imgixUrl + image + '?') : defaultImage;
 
-    const srcset = sizes.map(function(size) {
-      const screenw = size[0];
-      const sizeparams = size[1];
+    var srcset = sizes.map(function(size) {
+      var screenw = size[0];
+      var sizeparams = size[1];
 
-      let retparams = imageUrlParams.slice();
+      var retparams = imageUrlParams.slice();
 
       if (sizeparams && sizeparams.length) {
         if (sizeparams.indexOf('fit=') === -1) {
@@ -56,27 +56,27 @@ module.exports = function(dust) {
       imageUrlParams.push(sizes[0][1]);
     }
 
-    const src = imagePath + imageUrlParams.join('&');
+    var src = imagePath + imageUrlParams.join('&');
 
-    const srcsetStr = srcset.length ? ('srcset="' + srcset.join(', ') + '"') : '';
+    var srcsetStr = srcset.length ? ('srcset="' + srcset.join(', ') + '"') : '';
 
-    const onError = defaultImage ? 'onerror="this.src=\'' + defaultImage + '\'"' : '';
+    var onError = defaultImage ? 'onerror="this.src=\'' + defaultImage + '\'"' : '';
 
     return chunk.write(`<img class="${className}" ${srcsetStr} src="${src}" ${onError}>`);
   };
 
   dust.helpers.imgixUrl = function(chunk, context, bodies, params) {
-    const image = params.image;
-    const cropInfo = params.cropInfo;
+    var image = params.image;
+    var cropInfo = params.cropInfo;
 
-    const width = params.width;
-    const height = params.height;
+    var width = params.width;
+    var height = params.height;
 
-    const cropRect = (image && cropInfo) ? ('rect=' + [cropInfo.x, cropInfo.y, cropInfo.w, cropInfo.h].join(',')) : null;
+    var cropRect = (image && cropInfo) ? ('rect=' + [cropInfo.x, cropInfo.y, cropInfo.w, cropInfo.h].join(',')) : null;
 
-    const imgixUrl = context.get('ENV.imgixUrl');
+    var imgixUrl = context.get('ENV.imgixUrl');
 
-    const imgparams = [];
+    var imgparams = [];
     if (cropRect) {
       imgparams.push(cropRect);
       imgparams.push('fit=crop');
@@ -89,7 +89,7 @@ module.exports = function(dust) {
       imgparams.push('h=' + height);
     }
 
-    const imageUrl = image ? (imgixUrl + image + '?' + imgparams.join('&')) : '';
+    var imageUrl = image ? (imgixUrl + image + '?' + imgparams.join('&')) : '';
 
     return imageUrl;
   };

@@ -1,14 +1,14 @@
-const moment = require('moment');
+var moment = require('moment');
 
 module.exports = function(dust) {
   dust.helpers.thisYear = function(_chunk, _context, _bodies, _params) {
-    const today = new Date();
+    var today = new Date();
     return today.getFullYear();
   };
 
   dust.helpers.datepickerinit = function(_chunk, _context, _bodies, params) {
-    const value = params.value;
-    let time;
+    var value = params.value;
+    var time;
 
     if (value != null && (typeof value === 'string' || value instanceof Date)) {
       time = moment(value);
@@ -20,10 +20,10 @@ module.exports = function(dust) {
 
   dust.filters.timeago = function(value) {
     if (typeof value === 'string' || value instanceof Date) {
-      const time = moment.utc(value);
-      const now = moment();
+      var time = moment.utc(value);
+      var now = moment();
 
-      const diff = now.diff(time);
+      var diff = now.diff(time);
 
       if (diff < 60000) {
         return 'a few seconds ago';
@@ -43,7 +43,7 @@ module.exports = function(dust) {
 
   dust.filters.fullDateTime = function(value) {
     if (typeof value === 'string' || value instanceof Date) {
-      const time = moment.utc(value);
+      var time = moment.utc(value);
       return time.format('MMMM Do YYYY, h:mm a');
     }
     return value;
@@ -51,7 +51,7 @@ module.exports = function(dust) {
 
   dust.filters.fullDate = function(value) {
     if (typeof value === 'string' || value instanceof Date) {
-      const time = moment.utc(value);
+      var time = moment.utc(value);
       return time.format('MMMM Do YYYY');
     }
     return value;
@@ -59,7 +59,7 @@ module.exports = function(dust) {
 
   dust.filters.fullDateComma = function(value) {
     if (typeof value === 'string' || value instanceof Date) {
-      const time = moment.utc(value);
+      var time = moment.utc(value);
       return time.format('MMMM DD, YYYY');
     }
     return value;
@@ -67,7 +67,7 @@ module.exports = function(dust) {
 
   dust.filters.usdate = function(value) {
     if (typeof value === 'string' || value instanceof Date) {
-      const time = moment.utc(value);
+      var time = moment.utc(value);
       return time.format('MM/DD/YYYY');
     }
     return value;
