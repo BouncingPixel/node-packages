@@ -28,7 +28,8 @@ function makeMiddleware(app, webpack, webpackDevMiddleware, config) {
   const webpackcompiler = webpack(config);
 
   const devMiddlewareInst = webpackDevMiddleware(webpackcompiler, {
-    publicPath: config.output.publicPath
+    publicPath: config.output.publicPath,
+    serverSideRender: true
   });
 
   app.use(devMiddlewareInst);

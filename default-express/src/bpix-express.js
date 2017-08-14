@@ -3,6 +3,7 @@ const defaultInitializers = [
   'view-engine',
   'compression',
   'webpack-dev',
+  'webpack-hashes',
   'client-config',
   'public-dir',
   'universal-responses',
