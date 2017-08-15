@@ -17,16 +17,6 @@ module.exports = function(app) {
   });
 
   app.use(function(req, res, next) {
-    if (res.locals.webpackStats) {
-      const chunks = res.locals.webpackStats.toJson().chunks;
-
-      chunks.forEach(function(chunk) {
-        chunk.files.forEach(function(file) {
-          fileHashes[file] = chunk.hash.substr(0, 8);
-        });
-      });
-    }
-
     res.locals.fileHashes = fileHashes;
     next();
   });
