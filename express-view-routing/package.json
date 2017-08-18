@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/express-view-routing",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Generates routes for Express based on the file structure of view files",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
     "resolve-path": "^1.3.3",

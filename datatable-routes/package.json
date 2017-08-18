@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/datatable-routes",
-  "version": "0.2.0",
+  "version": "0.2.2",
   "description": "A route handler for Datatables that uses an ORM to select data",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
   },

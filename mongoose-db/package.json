@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/mongoose-db",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Wrapper to set up mongoose and provides an impl for passport-auth",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
     "bluebird": "^3.4.7",

@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/massive-passport-impl",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An implementation for the passport-auth package with massive (postgres) as the data store",
   "main": "index.js",
   "scripts": {
@@ -20,12 +20,12 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
   },
   "peerDependencies": {
-    "@bouncingpixel/massive-pg-db": "~0.0.1",
+    "@bouncingpixel/massive-pg-db": "~0.0.2",
     "massive": "^3.0.0",
     "nconf": "^0.8.4"
   }

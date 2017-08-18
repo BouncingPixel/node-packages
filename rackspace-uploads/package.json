@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/rackspace-uploads",
-  "version": "0.7.6",
+  "version": "0.7.7",
   "description": "Express middleware to handle Rackspace uploads",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
     "@bouncingpixel/http-errors": "^1.0.0",

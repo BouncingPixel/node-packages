@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/massive-pg-db",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Wrapper to help with using MassiveJS with Postgres on projects",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
     "bluebird": "^3.4.7",

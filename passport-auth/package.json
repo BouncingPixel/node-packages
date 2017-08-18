@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/passport-auth",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Express authentication handling with Passport",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
     "@bouncingpixel/http-errors": "^1.0.0",

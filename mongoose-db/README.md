@@ -20,6 +20,9 @@ The following configuration keys should be defined to use this module:
 #### Required
 - `{mongoConnectStr}`
   The connection string to the mongo database. Example: `mongodb://user:pass@mydbhost:12345/mydbname`.
+- `{mongooseSettings}`
+  Any extra settings to pass to the initialization of mongoose. By default, autoIndex is set to true only when not in production.
+  This setting is always set unless an explicit autoIndex is set. Generally, keeping this to false in production is ideal.
 
 ### Using mongoose-db
 
@@ -28,9 +31,7 @@ The must be initialized before using. The `init` function will make the connecti
 The `init` function can take an optional path to the models directory and pre-load all models.
 
 ```ts
-init(modelsDirectory?: string): Promise
+init(): Promise
 
 getSessionStore(expressSession: ExpressSession): MongoStore
-
-passportImplFactory(User: DatabaseModel, ssoExtendProfileFn?: (user, ssoProfile) => Promise)
 ```

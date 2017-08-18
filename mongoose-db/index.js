@@ -7,9 +7,13 @@ const nconf = require('nconf');
 module.exports = {
   init: function() {
     const mongoConnectString = nconf.get('mongoConnectStr');
+    const mongooseSettings = nconf.get('mongooseSettings') || {};
 
-    const settings = {autoindex: process.env.NODE_ENV !== 'production'};
-    return mongoose.connect(mongoConnectString, settings);
+    if (!mongooseSettings.hasOwnProperty('autoindex')) {
+      mongooseSettings.autoindex = process.env.NODE_ENV !== 'production';
+    }
+
+    return mongoose.connect(mongoConnectString, mongooseSettings);
   },
 
   getSessionStore: function(session) {

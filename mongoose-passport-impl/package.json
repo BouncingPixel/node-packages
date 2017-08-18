@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/mongoose-passport-impl",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An implementation for the passport-auth package with mongoose as the data store",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "dependencies": {
   },

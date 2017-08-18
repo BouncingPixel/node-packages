@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/pixel-validate",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Server and browser side validation when working with Mongoose models.",
   "main": "src/server.js",
   "browser": "src/browser.js",
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "6.x"
+    "node": ">=6.9.0"
   },
   "peerDependencies": {
     "mongoose": "^4.7.6"
