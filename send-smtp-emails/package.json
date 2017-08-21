@@ -1,7 +1,7 @@
 {
-  "name": "@bouncingpixel/mailgun-emails",
-  "version": "0.2.1",
-  "description": "Emailer capability using mailgun to send and DustJS for rendering",
+  "name": "@bouncingpixel/send-smtp-emails",
+  "version": "0.0.2",
+  "description": "Sending emails using SMTP",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js src"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/BouncingPixel/node-packages/tree/master/mailgun-emails"
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/send-smtp-emails"
   },
   "author": "Matt Hall <mhall@bouncingpixel.com>",
   "license": "MIT",
@@ -24,8 +24,10 @@
   },
   "dependencies": {
     "dustjs-linkedin": "2.7.5",
-    "mailgun-js": "^0.8.0",
-    "nconf": "^0.8.4",
+    "nodemailer": "~4.0.1",
     "winston": "^2.3.0"
+  },
+  "peerDependencies": {
+    "nconf": "^0.8.4"
   }
 }
