@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/algolia",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "description": "Helpers for algolia, namely a Mongoose model plugin",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,6 @@
     "winston": "^2.3.0"
   },
   "peerDependencies": {
-    "mongoose": "^4.7.6"
+    "mongoose": "^4.11.9"
   }
 }

@@ -9,8 +9,8 @@ module.exports = {
     const mongoConnectString = nconf.get('mongoConnectStr');
     const mongooseSettings = nconf.get('mongooseSettings') || {};
 
-    if (!mongooseSettings.hasOwnProperty('autoindex')) {
-      mongooseSettings.autoindex = process.env.NODE_ENV !== 'production';
+    if (!mongooseSettings.hasOwnProperty('useMongoClient')) {
+      mongooseSettings.useMongoClient = true;
     }
 
     return mongoose.connect(mongoConnectString, mongooseSettings);
