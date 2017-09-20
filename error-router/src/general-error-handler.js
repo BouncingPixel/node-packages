@@ -82,6 +82,15 @@ module.exports = function makeErrorHandler(inoptions) {
       return;
     }
 
+    if (process.env.NODE_ENV !== 'production') {
+      if (statusCode === 500 || statusCode === 400) {
+        const msgToSend = err.stack || logMessage;
+
+        res.send(`<html><head><title>Error: ${logMessage}</title><style>body {background-color:#000;color:#fff;font-size:14px;line-height:20px;}</style></head><body><pre>${msgToSend}</pre></body></html>`);
+        return;
+      }
+    }
+
     // check if the view file exists and use that
     // if not, check if view.substring(0, end-2) + 'xx' exists and use that
     // if not, then check if error/error.dust exists and use that
