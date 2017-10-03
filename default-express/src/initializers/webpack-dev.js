@@ -50,12 +50,19 @@ function makeMiddleware(app, webpack, webpackDevMiddleware, config) {
 
   const devMiddlewareInst = webpackDevMiddleware(webpackcompiler, {
     publicPath: config.output.publicPath,
-    serverSideRender: true
+    serverSideRender: true,
+    lazy: true
   });
 
   app.use(function(req, res, next) {
     devMiddlewareInst(req, res, function() {
-      const stats = res.locals.webpackStats.toJson('errors-only');
+      const webstats = res.locals.webpackStats;
+      if (!webstats) {
+        // not an error, just webpack may not have ran yet
+        return next();
+      }
+
+      const stats = webstats.toJson('errors-only');
 
       if (stats && stats.errors.length) {
         const errors = stats.errors.map(e => `<pre>${ansiConverter.toHtml(e)}</pre>`);

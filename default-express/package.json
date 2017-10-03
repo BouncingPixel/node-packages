@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/default-express",
-  "version": "0.13.2",
+  "version": "0.13.3",
   "description": "The default express configuration for most projects",
   "main": "index.js",
   "scripts": {
