@@ -9,6 +9,14 @@ module.exports = function(app) {
   });
 
   app.zone('csrf').use(function(req, res, next) {
+    const isMultipart = req.method.toLowerCase() === 'post' &&
+      req.headers['content-type'].toLowerCase === 'multipart/form-data';
+
+    if (isMultipart && !req.body) {
+      // cannot validate CSRF if the multipart data wasnt parsed yet
+      return next();
+    }
+
     // this was originally set to non-POST only, but had some issues
     // so instead, using a lazy fetch for the CSRF
     // DustJS will call the function if it needs the value, otherwise, the CSRF isn't generated
