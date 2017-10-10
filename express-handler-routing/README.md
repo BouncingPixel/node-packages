@@ -13,9 +13,12 @@ Generates routes for Express based on the file structure of route files.
 
 To use the package, simply require it in and pass in the path to your routes directory.
 
-Subdirectories will be navigated properly.
+Subdirectories will be navigated properly and are loaded after the `index.js`, but before any other `.js` file.
 To create a route for a directory, create an index.js file in that directory.
-This route will work with and without the ending slash.
+The index.js will be the first file to be loaded within a directory.
+Alternatively, a `.js` file in the parent directory using the same name as the directory can be used
+which will be loaded after the directory.
+The directory's index route will work with and without the ending slash.
 
 ```js
 app.use(
@@ -87,4 +90,20 @@ The following routes will be generated:
 ```
 /:site/blogs
 /:site/blogs/:id
+```
+
+### Load order
+
+1. `index.js` file is always loaded first before any directories or files
+2. Directories are loaded second in order of the OS (alphabetical)
+3. all other `.js` files are loaded afterwards in order of the OS (alphabetical)
+
+As such, if you wish for a behavior to apply to everything within a directory, put it in the `index.js`.
+If you wish for a behavior to apply last inside a subdirectory, you may use a file within the parent with the same name.
+
+Example:
+```
+/index.js
+/myfolder/index.js
+/myfolder.js
 ```

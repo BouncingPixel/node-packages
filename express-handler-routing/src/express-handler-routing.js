@@ -18,41 +18,73 @@ function addRoutesInDir(baseDir, dir, app) {
   const fullDir = path.join(baseDir, dir);
 
   try {
-    const stats = fs.statSync(fullDir);
+    const files = fs.readdirSync(fullDir);
 
-    if (stats.isDirectory()) {
-      const files = fs.readdirSync(fullDir);
+    const filesToLoad = [];
+    const dirsToLoad = [];
+    let indexFilePath = null;
 
-      files.forEach(function(file) {
-        addRoutesInDir(baseDir, path.join(dir, file), app);
-      });
-    } else {
-      // make sure it ends in .js
-      if (!endsWith(dir, '.js')) {
-        return;
+    files.forEach(function(file) {
+      const relativePath = path.join(dir, file);
+      const absolutePath = path.join(fullDir, file);
+
+      const stats = fs.statSync(absolutePath);
+
+      if (stats.isDirectory()) {
+        dirsToLoad.push(relativePath);
+      } else {
+        if (file === 'index.js') {
+          indexFilePath = relativePath;
+        } else {
+          filesToLoad.push(relativePath);
+        }
       }
+    });
 
-      const checkIndexStr = path.sep + 'index.js';
-      const isIndex = endsWith(dir, checkIndexStr);
-
-      const substrEnd = dir.length - (isIndex ? checkIndexStr.length : 3);
-      const url = dir.substr(0, substrEnd);
-
-      const parameterizedUrl = makeExpressPath(url);
-
-      const routeMethods = require(fullDir);
-
-      if (routeMethods) {
-        const before = makeSureIsArray(routeMethods.before);
-        const after = makeSureIsArray(routeMethods.after);
-        const zones = makeSureIsArray(routeMethods.zone);
-
-        addRoutes(app, parameterizedUrl, routeMethods, before, after, zones);
-      }
+    // always load an index file first if it exists
+    if (indexFilePath) {
+      addRoutesInFile(baseDir, indexFilePath, app);
     }
+
+    // load any directories before files
+    dirsToLoad.forEach(function(relativePath) {
+      addRoutesInDir(baseDir, relativePath, app);
+    });
+
+    // finally load the files last
+    filesToLoad.forEach(function(relativePath) {
+      addRoutesInFile(baseDir, relativePath, app);
+    });
   } catch (e) {
     logger.warn(e);
     return;
+  }
+}
+
+function addRoutesInFile(baseDir, dir, app) {
+  const fullDir = path.join(baseDir, dir);
+
+  // make sure it ends in .js
+  if (!endsWith(dir, '.js')) {
+    return;
+  }
+
+  const checkIndexStr = path.sep + 'index.js';
+  const isIndex = endsWith(dir, checkIndexStr);
+
+  const substrEnd = dir.length - (isIndex ? checkIndexStr.length : 3);
+  const url = dir.substr(0, substrEnd);
+
+  const parameterizedUrl = makeExpressPath(url);
+
+  const routeMethods = require(fullDir);
+
+  if (routeMethods) {
+    const before = makeSureIsArray(routeMethods.before);
+    const after = makeSureIsArray(routeMethods.after);
+    const zones = makeSureIsArray(routeMethods.zone);
+
+    addRoutes(app, parameterizedUrl, routeMethods, before, after, zones);
   }
 }
 
