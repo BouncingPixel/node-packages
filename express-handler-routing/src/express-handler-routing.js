@@ -132,14 +132,15 @@ function addRoutes(app, baseUrl, routeMethods, parentBefore, parentAfter, parent
     } else if (item.length && item[0] === '/') {
       // if its not a method and it starts with a /, we assume it is a nested set of routes
       const url = baseUrl !== '/' ? (baseUrl + item) : item;
-      const before = makeSureIsArray(routeMethods.before);
-      const after = makeSureIsArray(routeMethods.after);
-      const zones = makeSureIsArray(routeMethods.zone);
+      const itemRouteMethods = routeMethods[item];
+      const before = makeSureIsArray(itemRouteMethods.before);
+      const after = makeSureIsArray(itemRouteMethods.after);
+      const zones = makeSureIsArray(itemRouteMethods.zone);
 
       addRoutes(
         app,
         url,
-        routeMethods[item],
+        itemRouteMethods,
         parentBefore.concat(before),
         after.concat(parentAfter),
         parentZones.concat(zones)
