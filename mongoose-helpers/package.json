@@ -1,0 +1,30 @@
+{
+  "name": "@bouncingpixel/mongoose-helpers",
+  "version": "0.0.1",
+  "description": "Collection of mongoose schema plugins for repeated tasks",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint index.js src"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BouncingPixel/node-packages/tree/master/mongoose-helpers"
+  },
+  "author": "Matt Hall <mhall@bouncingpixel.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BouncingPixel/node-packages/issues"
+  },
+  "homepage": "https://github.com/BouncingPixel/node-packages",
+  "engines": {
+    "node": ">=6.9.0"
+  },
+  "dependencies": {
+    "bcrypt": "~1.0.3"
+  },
+  "peerDependencies": {
+  }
+}
