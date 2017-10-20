@@ -7,6 +7,7 @@ const async = require('async');
 const bluebird = require('bluebird');
 const path = require('path');
 const fs = require('fs');
+const contentType = require('content-type');
 const fsunlink = bluebird.promisify(fs.unlink);
 
 const BadRequestError = require('@bouncingpixel/http-errors').BadRequestError;
@@ -208,7 +209,7 @@ module.exports = function(fields) {
 
   // to abstract multer away, doing this to "inject" multer into the middleware stack
   return function(req, res, next) {
-    if (req.headers['content-type'].toLowerCase !== 'multipart/form-data') {
+    if (contentType.parse(req).type !== 'multipart/form-data') {
       next(new Error('Form must have enctype="multipart/form-data" in order to do file uploads'));
       return;
     }

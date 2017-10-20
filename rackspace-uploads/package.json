@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/rackspace-uploads",
-  "version": "0.7.8",
+  "version": "0.7.9",
   "description": "Express middleware to handle Rackspace uploads",
   "main": "index.js",
   "scripts": {
