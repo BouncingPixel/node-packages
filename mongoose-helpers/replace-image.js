@@ -32,6 +32,10 @@ module.exports = function ReplaceImage(schema, initOptions) {
   schema.pre('save', function(next) {
     var item = this;
 
+    if (!item._imgsToRemember) {
+      return next();
+    }
+
     var cachedFieldKeys = Object.keys(item._imgsToRemember);
 
     // only hash the password if it has been modified (or is new)

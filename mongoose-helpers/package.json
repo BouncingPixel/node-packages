@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/mongoose-helpers",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Collection of mongoose schema plugins for repeated tasks",
   "main": "index.js",
   "scripts": {
