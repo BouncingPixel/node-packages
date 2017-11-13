@@ -29,7 +29,7 @@ module.exports = function(app) {
     }
 
     // the flash vars too for display
-    if (req.method !== 'POST') {
+    if (req.method !== 'POST' && req.flash) {
       res.locals.flashError = req.flash('error');
       res.locals.flashWarn = req.flash('warn');
       res.locals.flashSuccess = req.flash('success');

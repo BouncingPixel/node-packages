@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/mongoose-db",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "Wrapper to set up mongoose and provides an impl for passport-auth",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "bluebird": "^3.4.7",
-    "connect-mongo": "^1.3.2"
+    "connect-mongo": "^2.0.0"
   },
   "peerDependencies": {
     "express": "^4.13.4",
