@@ -1,6 +1,12 @@
 const mime = require('mime');
 
 module.exports = function checkFileMimeFactory(mimetypes, allowConversion) {
+  if (!mimetypes || !mimetypes.length) {
+    return function() {
+      return true;
+    };
+  }
+
   return function checkIfFileInvalid(file) {
     const originalMime = mime.lookup(file.filename);
 
