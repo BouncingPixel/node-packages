@@ -133,7 +133,7 @@ router.post('/uploadFile', uploadFile([
       // return the full filename
       // alternatively, for random names that will not overlap:
       // look to use uuid's uuid.v4() or shortid's shortid.generate
-      // then append the extesion to it (path.parse(file.filename).ext)
+      // then append the extension to it (path.parse(file.filename).ext)
       return file.filename;
     },
 
