@@ -23,6 +23,7 @@ The following configuration keys should be defined to use this module:
 - `{mongooseSettings}`
   Any extra settings to pass to the initialization of mongoose. By default, autoIndex is set to true only when not in production.
   This setting is always set unless an explicit autoIndex is set. Generally, keeping this to false in production is ideal.
+  As of mongoose 5, `autoIndex` or `useMongoClient` options are no longer need since the mongo client is enabled by default.
 
 ### Using mongoose-db
 

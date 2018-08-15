@@ -8,10 +8,11 @@ module.exports = {
   init: function() {
     const mongoConnectString = nconf.get('mongoConnectStr');
     const mongooseSettings = nconf.get('mongooseSettings') || {};
-
-    if (!mongooseSettings.hasOwnProperty('useMongoClient')) {
-      mongooseSettings.useMongoClient = true;
-    }
+    // Mongoose >5 uses mongo client by default
+    // setting was triggering a warning
+    // if (!mongooseSettings.hasOwnProperty('useMongoClient')) {
+    //   mongooseSettings.useMongoClient = true;
+    // }
 
     return mongoose.connect(mongoConnectString, mongooseSettings);
   },
