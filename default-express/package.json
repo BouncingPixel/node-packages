@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/default-express",
-  "version": "0.15.2",
+  "version": "0.15.3",
   "description": "The default express configuration for most projects",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": ">=6.9.0"
+    "node": ">=10.0.0"
   },
   "dependencies": {
     "@bouncingpixel/config-loader": "^0.1.1",
