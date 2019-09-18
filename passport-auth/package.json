@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/passport-auth",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "Express authentication handling with Passport",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
   },
   "dependencies": {
     "@bouncingpixel/http-errors": "^1.0.0",
-    "bcrypt": "^1.0.2",
+    "bcrypt": "^3.0.0",
     "bluebird": "^3.4.7",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
