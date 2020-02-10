@@ -1,11 +1,13 @@
 # @bouncingpixel NodeJS NPM Packages
 
 A set of re-usable packages, many which are wrappers.
-All are available in the `@bouncingpixel/` scope on NPM.
+All are available in the `@bouncingpixel/` scope on [NPM](https://www.npmjs.com/search?q=%40bouncingpixel).
 
 Each package in this group has specific documentation on what it is used for and how to impliment it and/or configure it.
 
 ### Package List
+
+__Linking each of the individual packages with it's README.md file__
 
 [Algolia](https://github.com/BouncingPixel/node-packages/blob/master/algolia/README.md)
 
