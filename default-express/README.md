@@ -6,7 +6,7 @@ The default express set up used for many projects.
 
 ### Requirements
 
-- NodeJS 6 LTS
+- NodeJS >=10.0.0
 - other requirements
 
 ### Configuration
