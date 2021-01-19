@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/express-handler-routing",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Generates routes for Express based on the file structure of route files",
   "main": "index.js",
   "scripts": {
@@ -21,14 +21,14 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": ">=6.9.0"
+    "node": "14"
   },
   "dependencies": {
     "methods": "^1.1.2",
-    "winston": "^2.3.0"
+    "winston": "^3.3.0"
   },
   "peerDependencies": {
-    "express": "^4.13.4"
+    "express": "^4.17.1"
   },
   "devDependencies": {
     "istanbul": "~0.4.5",

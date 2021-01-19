@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/dust-helpers",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "A collection of Dust helpers broken out by purpose",
   "main": "index.js",
   "scripts": {
@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": ">=6.9.0"
+    "node": "14"
   },
   "dependencies": {
-    "moment": "^2.17.1",
-    "pluralize": "^3.1.0"
+    "moment": "^2.29.1",
+    "pluralize": "^8.0.0"
   },
   "peerDependencies": {
     "dustjs-linkedin": "^2.7.5"
