@@ -44,7 +44,7 @@
     "express-session": "^1.14.2",
     "express-winston": "^2.1.2",
     "express-zones": "~0.4.0",
-    "forwarded-http":"~0.3.0",
+    "forwarded-http": "~0.3.0",
     "nconf": "^0.8.4",
     "winston": "^2.3.0"
   }
