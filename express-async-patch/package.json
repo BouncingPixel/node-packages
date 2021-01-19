@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/express-async-patch",
-  "version": "0.3.0",
+  "version": "0.3.1-beta",
   "description": "Patches Express 4.x to support generators (via bluebird-coroutine) and async",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "14"
+    "node": "^14.x"
   },
   "dependencies": {
     "bluebird": "^3.7.2"

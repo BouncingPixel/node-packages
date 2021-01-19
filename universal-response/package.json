@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/universal-response",
-  "version": "0.3.0",
+  "version": "0.3.0-beta",
   "description": "Extra Express responses for routes that are both rendered HTML and XHR",
   "main": "index.js",
   "scripts": {

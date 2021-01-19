@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/default-express",
-  "version": "0.15.3",
+  "version": "0.16.0-beta",
   "description": "The default express configuration for most projects",
   "main": "index.js",
   "scripts": {
@@ -20,17 +20,17 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": ">=10.0.0"
+    "node": "^14.x"
   },
   "dependencies": {
-    "@bouncingpixel/config-loader": "^0.2.0",
-    "@bouncingpixel/dust-helpers": "^0.4.1",
-    "@bouncingpixel/error-router": "^0.7.3",
-    "express-async-patch": "~0.3.0",
-    "@bouncingpixel/express-handler-routing": "^0.5.0",
-    "@bouncingpixel/express-view-routing": "^0.2.0",
-    "@bouncingpixel/http-errors": "^1.1.0",
-    "@bouncingpixel/universal-response": "^0.3.0",
+    "@bouncingpixel/config-loader": "0.2.0-beta",
+    "@bouncingpixel/dust-helpers": "0.4.0-beta",
+    "@bouncingpixel/error-router": "0.7.0-beta",
+    "express-async-patch": "0.3.1-beta",
+    "@bouncingpixel/express-handler-routing": "0.5.0-beta",
+    "@bouncingpixel/express-view-routing": "0.2.0-beta",
+    "@bouncingpixel/http-errors": "1.1.0-beta",
+    "@bouncingpixel/universal-response": "^0.3.0-beta",
     "ansi-to-html": "~0.6.3",
     "body-parser": "^1.19.0",
     "compression": "^1.7.4",

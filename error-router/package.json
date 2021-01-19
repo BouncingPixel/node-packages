@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/error-router",
-  "version": "0.7.3",
+  "version": "0.7.0-beta",
   "description": "An Express error handler/router than directs errors to the proper error page",
   "main": "index.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": "14"
+    "node": "^14.x"
   },
   "dependencies": {
     "winston": "^3.3.0"

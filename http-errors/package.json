@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/http-errors",
-  "version": "1.1.0",
+  "version": "1.1.0-beta",
   "description": "Error objects for HTTP status codes that can be thrown with status set",
   "main": "index.js",
   "scripts": {
