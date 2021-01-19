@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/passport-auth",
-  "version": "0.5.2",
+  "version": "0.6.0-beta",
   "description": "Express authentication handling with Passport",
   "main": "index.js",
   "scripts": {
@@ -20,18 +20,18 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": ">=6.9.0"
+    "node": "^14.x"
   },
   "dependencies": {
-    "@bouncingpixel/http-errors": "^1.0.0",
-    "bcrypt": "^3.0.0",
-    "bluebird": "^3.4.7",
-    "passport": "^0.3.2",
+    "@bouncingpixel/http-errors": "1.1.0-beta",
+    "bcryptjs": "2.4.3",
+    "bluebird": "^3.7.x",
+    "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "winston": "^2.3.0"
+    "winston": "^3.3.0"
   },
   "peerDependencies": {
-    "express": "^4.13.4",
-    "nconf": "^0.8.4"
+    "express": "^4.17.1",
+    "nconf": "^0.11.1"
   }
 }

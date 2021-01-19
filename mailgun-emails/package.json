@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/mailgun-emails",
-  "version": "0.2.1",
+  "version": "0.3.0-beta",
   "description": "Emailer capability using mailgun to send and DustJS for rendering",
   "main": "index.js",
   "scripts": {
@@ -20,12 +20,12 @@
   },
   "homepage": "https://github.com/BouncingPixel/node-packages",
   "engines": {
-    "node": ">=6.9.0"
+    "node": "^14.x"
   },
   "dependencies": {
     "dustjs-linkedin": "2.7.5",
-    "mailgun-js": "^0.8.0",
-    "nconf": "^0.8.4",
-    "winston": "^2.3.0"
+    "mailgun-js": "^0.22.0",
+    "nconf": "^0.11.1",
+    "winston": "^3.3.0"
   }
 }
