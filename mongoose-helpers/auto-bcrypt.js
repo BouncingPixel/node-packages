@@ -1,6 +1,6 @@
 'use strict';
 
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 
 module.exports = function AutoBcrypt(schema, initOptions) {
   if (!initOptions || !initOptions.fields || !Array.isArray(initOptions.fields)) {

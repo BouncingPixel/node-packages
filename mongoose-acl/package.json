@@ -1,6 +1,6 @@
 {
   "name": "@bouncingpixel/mongoose-acl",
-  "version": "0.2.0",
+  "version": "0.3.0-beta",
   "description": "Mongoose plugin for access control protection in models",
   "main": "index.js",
   "scripts": {
@@ -27,13 +27,13 @@
     "@bouncingpixel/http-errors": "^1.0.0"
   },
   "peerDependencies": {
-    "mongoose": "^4.11.9"
+    "mongoose": "^5.2.8"
   },
   "devDependencies": {
-    "bluebird": "~3.5.0",
+    "bluebird": "^3.7.2",
     "istanbul": "~0.4.5",
     "jasmine": "~2.6.0",
-    "mockgoose": "~7.3.3",
-    "mongoose": "^4.11.9"
+    "mockgoose": "^8.0.4",
+    "mongoose": "^5.2.8"
   }
 }
