@@ -35,7 +35,7 @@ module.exports = {
     const express = require('express');
     const app = express();
     require('express-async-patch')(app);
-
+    app.use(express.static(path.join(__dirname, 'public')));
     require('express-zones')(app);
 
     app.set('x-powered-by', false);
@@ -43,12 +43,12 @@ module.exports = {
 
     let current = Promise.resolve();
 
-    initList.forEach(function(initializer) {
+    initList.forEach(function (initializer) {
       if (typeof initializer === 'string') {
         initializer = require('./initializers/' + initializer);
       }
 
-      current = current.then(function() {
+      current = current.then(function () {
         if (Array.isArray(initializer)) {
           return Promise.all(initializer);
         } else {
@@ -57,7 +57,7 @@ module.exports = {
       });
     });
 
-    return current.then(function() {
+    return current.then(function () {
       return app;
     });
   }
@@ -65,7 +65,7 @@ module.exports = {
 
 // prevent someone from overriding the internal defaultInitializers
 Object.defineProperty(module.exports, 'defaultInitializers', {
-  get: function() {
+  get: function () {
     return defaultInitializers.slice();
   }
 });
